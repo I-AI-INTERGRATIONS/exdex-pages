@@ -4,18 +4,113 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SHOP.EXDEX.CC - Prepaid Cash to Card Service</title>
-  <link rel="stylesheet" href="website/css/styles.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0d0d0d;
+      color: #f1f1f1;
+    }
+    header, footer {
+      background: #111;
+      padding: 1rem 2rem;
+    }
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 2rem;
+    }
+    .logo a {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #00f7ff;
+      text-decoration: none;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1rem;
+      padding: 0;
+    }
+    nav ul li a {
+      color: #00f7ff;
+      text-decoration: none;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+    }
+    .highlight {
+      color: #FFD700;
+    }
+    .primary-button {
+      background: #00f7ff;
+      color: #000;
+      padding: 0.75rem 1.5rem;
+      text-decoration: none;
+      border-radius: 5px;
+      display: inline-block;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .stat-card {
+      background: #1a1a1a;
+      padding: 1rem;
+      border-radius: 8px;
+    }
+    .stat-card h3 {
+      margin: 0 0 0.5rem;
+    }
+    .value {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .change.positive {
+      color: #4caf50;
+    }
+    .change.neutral {
+      color: #ccc;
+    }
+    footer {
+      text-align: center;
+      font-size: 0.9rem;
+    }
+    footer .footer-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 2rem;
+      margin-bottom: 1rem;
+    }
+    footer h3 {
+      margin-bottom: 0.5rem;
+    }
+    footer ul {
+      list-style: none;
+      padding: 0;
+    }
+    footer a {
+      color: #00f7ff;
+      text-decoration: none;
+    }
+  </style>
 </head>
-<body class="dark-theme">
+<body>
   <header>
     <div class="container">
       <div class="logo">
-        <a href="index.html">SHOP.<span class="magenta">EXDEX</span>.<span class="gold">CC</span></a>
+        <a href="#">SHOP.EXDEX.CC</a>
       </div>
       <nav>
         <ul>
-          <li><a href="index.html" class="active">Home</a></li>
-          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Dashboard</a></li>
           <li><a href="https://pool.exdex.cc">Trading Pools</a></li>
           <li><a href="#" class="connect-wallet">Connect Wallet</a></li>
         </ul>
@@ -25,11 +120,9 @@
 
   <section class="hero">
     <div class="container">
-      <div class="hero-content">
-        <h1>Cash to Card <span class="highlight">Simplified</span></h1>
-        <p>Convert cryptocurrency to prepaid cards with military-grade security</p>
-        <a href="#" class="primary-button connect-wallet">Connect Wallet</a>
-      </div>
+      <h1>Cash to Card <span class="highlight">Simplified</span></h1>
+      <p>Convert cryptocurrency to prepaid cards with military-grade security</p>
+      <a href="#" class="primary-button connect-wallet">Connect Wallet</a>
     </div>
   </section>
 
@@ -63,19 +156,19 @@
   <footer>
     <div class="container">
       <div class="footer-grid">
-        <div class="footer-column">
+        <div>
           <h3>SHOP.EXDEX.CC</h3>
           <p>Part of the EXDEX platform for secure trading and fund management.</p>
         </div>
-        <div class="footer-column">
+        <div>
           <h3>Quick Links</h3>
           <ul>
-            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="#">Dashboard</a></li>
             <li><a href="https://pool.exdex.cc">Trading Pools</a></li>
             <li><a href="https://api.exdex.cc">API</a></li>
           </ul>
         </div>
-        <div class="footer-column">
+        <div>
           <h3>Contact</h3>
           <ul>
             <li><a href="mailto:support@exdex.cc">support@exdex.cc</a></li>
@@ -84,16 +177,16 @@
           </ul>
         </div>
       </div>
-      <div class="footer-bottom">
-        <p>&copy; 2025 EXDEX. All rights reserved.</p>
-      </div>
+      <p>&copy; 2025 EXDEX. All rights reserved.</p>
     </div>
   </footer>
 
   <script>
-    document.querySelector('.connect-wallet').addEventListener('click', (e) => {
-      e.preventDefault();
-      alert('Wallet connection simulation: This would connect to a Web3 wallet');
+    document.querySelectorAll('.connect-wallet').forEach(el => {
+      el.addEventListener('click', e => {
+        e.preventDefault();
+        alert('Wallet connection simulation: This would connect to a Web3 wallet');
+      });
     });
   </script>
 </body>
