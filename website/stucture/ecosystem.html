@@ -1,0 +1,1962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BHE Ecosystem Architecture | ExDEX Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Roboto+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/ecosystem.css">
+    <script src="https://unpkg.com/three@0.145.0/build/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <style>
+        /* ... existing styles ... */
+        
+        /* Wallet Interface Styles */
+        .wallet-interface {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #1a1a1a, #2a2a2a);
+            z-index: 3000;
+            display: none;
+            padding: 20px;
+        }
+
+        .wallet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .wallet-title {
+            flex: 1;
+        }
+
+        .wallet-balance {
+            font-size: 2em;
+            color: #8ae2ff;
+            margin-top: 10px;
+        }
+
+        .wallet-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .wallet-btn {
+            background: linear-gradient(45deg, #004466, #002233);
+            border: 1px solid #00a8ff;
+            color: #8ae2ff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .wallet-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,150,255,0.4);
+        }
+
+        .wallet-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            border: none;
+            background: none;
+            color: #8ae2ff;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            border-bottom: 2px solid #00a8ff;
+        }
+
+        .wallet-content {
+            display: none;
+        }
+
+        .wallet-content.active {
+            display: block;
+        }
+
+        /* Assets Grid */
+        .assets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .asset-card {
+            background: linear-gradient(45deg, #2a2a2a, #3a3a3a);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .asset-icon {
+            font-size: 3em;
+            color: #00a8ff;
+            margin-bottom: 10px;
+        }
+
+        .asset-info {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .asset-name {
+            color: #8ae2ff;
+            font-weight: bold;
+        }
+
+        .asset-balance {
+            color: #8ae2ff;
+            font-size: 1.2em;
+        }
+
+        .asset-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .asset-btn {
+            background: linear-gradient(45deg, #004466, #002233);
+            border: 1px solid #00a8ff;
+            color: #8ae2ff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        /* Transactions List */
+        .transactions-list {
+            background: linear-gradient(45deg, #2a2a2a, #3a3a3a);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .transaction-header {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            margin-bottom: 15px;
+            color: #8ae2ff;
+        }
+
+        .transaction-item {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            padding: 10px 0;
+            border-bottom: 1px solid #4d5560;
+        }
+
+        /* Security Settings */
+        .security-settings {
+            display: grid;
+            gap: 20px;
+        }
+
+        .security-section {
+            background: linear-gradient(45deg, #2a2a2a, #3a3a3a);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .security-status {
+            color: #8ae2ff;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .security-btn {
+            background: linear-gradient(45deg, #004466, #002233);
+            border: 1px solid #00a8ff;
+            color: #8ae2ff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        /* Settings Grid */
+        .settings-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .setting-item {
+            background: linear-gradient(45deg, #2a2a2a, #3a3a3a);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .setting-label {
+            color: #8ae2ff;
+        }
+
+        .setting-select {
+            background: linear-gradient(45deg, #004466, #002233);
+            border: 1px solid #00a8ff;
+            color: #8ae2ff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .setting-toggle {
+            width: 50px;
+            height: 25px;
+            background: #4d5560;
+            border-radius: 12.5px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .toggle-btn {
+            width: 20px;
+            height: 20px;
+            background: #8ae2ff;
+            border-radius: 50%;
+            position: absolute;
+            left: 2.5px;
+            top: 2.5px;
+            transition: all 0.3s;
+        }
+
+        .setting-toggle.active .toggle-btn {
+            left: 27.5px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 4000;
+        }
+
+        .modal-content {
+            background: linear-gradient(45deg, #2a2a2a, #3a3a3a);
+            border-radius: 10px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            color: #8ae2ff;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #4d5560;
+            border-radius: 5px;
+            background: #3a3a3a;
+            color: #8ae2ff;
+        }
+
+        .modal-btn {
+            background: linear-gradient(45deg, #004466, #002233);
+            border: 1px solid #00a8ff;
+            color: #8ae2ff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .receive-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .receive-address,
+        .receive-qr {
+            background: linear-gradient(45deg, #2a2a2a, #3a3a3a);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        #receiveAddress {
+            color: #8ae2ff;
+            word-break: break-all;
+            margin-top: 10px;
+        }
+
+        #qrCode {
+            margin-top: 10px;
+        }
+
+        /* Visualization Styles */
+        .visualization-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .sphere-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+        }
+
+        .visualization-overlay {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: #8ae2ff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+        }
+
+        .visualization-overlay h2 {
+            font-size: 2em;
+            margin: 0;
+        }
+
+        .visualization-overlay p {
+            font-size: 1.2em;
+            margin: 10px 0 0;
+        }
+
+        /* Key Recovery Styles */
+        .key-paths {
+            margin: 20px 0;
+        }
+
+        .path-group {
+            margin-bottom: 15px;
+        }
+
+        .path-checkboxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .custom-path {
+            width: 100%;
+            margin-right: 10px;
+        }
+
+        .add-path-btn {
+            background: linear-gradient(45deg, #004466, #002233);
+            border: 1px solid #00a8ff;
+            color: #8ae2ff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .add-path-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,150,255,0.4);
+        }
+
+        .result-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            padding: 10px;
+            background: linear-gradient(45deg, #004466, #002233);
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .result-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            padding: 10px;
+            border-bottom: 1px solid #4d5560;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-item .address {
+            color: #8ae2ff;
+            font-family: 'Courier New', monospace;
+        }
+
+        .result-item .balance {
+            color: #00a8ff;
+            font-weight: bold;
+        }
+
+        .result-item .transactions {
+            color: #8ae2ff;
+        }
+
+        .result-item .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            background: linear-gradient(45deg, #004466, #002233);
+            border: 1px solid #00a8ff;
+            color: #8ae2ff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,150,255,0.4);
+        }
+
+        .key-tree-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .tree-depth, .tree-width, .tree-type {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tree-depth input, .tree-width input {
+            width: 100px;
+        }
+
+        .tree-type select {
+            width: 100%;
+        }
+
+        .tree-visualization {
+            margin: 20px 0;
+            padding: 20px;
+            background: linear-gradient(45deg, #2a2a2a, #3a3a3a);
+            border-radius: 10px;
+            overflow-x: auto;
+        }
+
+        .tree-node {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+            padding: 5px;
+            background: rgba(0, 150, 255, 0.1);
+            border-radius: 5px;
+        }
+
+        .tree-node .path {
+            color: #8ae2ff;
+            font-family: 'Courier New', monospace;
+        }
+
+        .tree-node .address {
+            color: #00a8ff;
+            font-family: 'Courier New', monospace;
+        }
+
+        .tree-node .balance {
+            color: #00ff00;
+            font-weight: bold;
+        }
+
+        .tree-node .transactions {
+            color: #8ae2ff;
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Container -->
+    <div class="cosmos-background">
+        <div class="stars"></div>
+        <div class="twinkling"></div>
+        <div class="clouds"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="main-header">
+        <div class="logo-container">
+            <img src="img/exdex-logo.svg" alt="ExDEX Logo" class="logo">
+            <div class="logo-text">EXDEX</div>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#trading">Trade</a></li>
+                <li><a href="index.html#liquidity">Liquidity</a></li>
+                <li><a href="#ecosystem">Ecosystem</a></li>
+                <li><a href="wallet.html">XDEX Wallet</a></li>
+                <li><a href="index.html#card-services">Card Services</a></li>
+            </ul>
+        </nav>
+        <div class="connect-wallet">
+            <button class="neon-button">Connect Wallet</button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section compact-hero">
+        <div class="hero-content">
+            <h1 class="hero-title">BHE ECOSYSTEM</h1>
+            <h2 class="hero-subtitle">LAYER 4 ARCHITECTURE</h2>
+            <p class="hero-text">Explore the interconnected components of the Bitcoin Hardened Ethereum ecosystem</p>
+        </div>
+        <div class="vault-door-container">
+            <div class="vault-door" onclick="openKnoxWallet()">
+                <div class="door-icon">🔒</div>
+                <div class="door-text">KNOX WALLET</div>
+            </div>
+            <div class="knox-recovery-container">
+                <div class="knox-recovery-icon">🔄</div>
+                <button class="knox-recovery-button" onclick="openKnoxRecovery()">
+                    <span class="pulse-ring"></span>
+                    Knox Recovery
+                </button>
+                <div class="knox-recovery-text">Secure asset recovery</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Knox Wallet Interface -->
+    <div id="knoxWallet" class="wallet-interface">
+        <div class="wallet-header">
+            <div class="wallet-title">
+                <h2>KNOX WALLET</h2>
+                <div class="wallet-balance">
+                    <span class="balance-amount">$0.00</span>
+                    <span class="balance-currency">USD</span>
+                </div>
+            </div>
+            <div class="wallet-actions">
+                <button class="wallet-btn" onclick="showDepositModal()">Deposit</button>
+                <button class="wallet-btn" onclick="showWithdrawModal()">Withdraw</button>
+                <button class="wallet-btn" onclick="showSendModal()">Send</button>
+                <button class="wallet-btn" onclick="showReceiveModal()">Receive</button>
+            </div>
+        </div>
+
+        <div class="wallet-tabs">
+            <button class="tab-btn active" onclick="showTab('assets')">Assets</button>
+            <button class="tab-btn" onclick="showTab('transactions')">Transactions</button>
+            <button class="tab-btn" onclick="showTab('security')">Security</button>
+            <button class="tab-btn" onclick="showTab('settings')">Settings</button>
+        </div>
+
+        <!-- Assets Tab -->
+        <div id="assets" class="wallet-content active">
+            <div class="assets-grid">
+                <div class="asset-card">
+                    <div class="asset-icon">💰</div>
+                    <div class="asset-info">
+                        <div class="asset-name">USD</div>
+                        <div class="asset-balance">$0.00</div>
+                    </div>
+                    <div class="asset-actions">
+                        <button class="asset-btn" onclick="showDepositModal()">Add</button>
+                        <button class="asset-btn" onclick="showWithdrawModal()">Remove</button>
+                    </div>
+                </div>
+                <div class="asset-card">
+                    <div class="asset-icon">💳</div>
+                    <div class="asset-info">
+                        <div class="asset-name">Debit Card</div>
+                        <div class="asset-balance">$0.00</div>
+                    </div>
+                    <div class="asset-actions">
+                        <button class="asset-btn" onclick="showCardSettings()">Manage</button>
+                    </div>
+                </div>
+                <div class="asset-card">
+                    <div class="asset-icon">📊</div>
+                    <div class="asset-info">
+                        <div class="asset-name">Investments</div>
+                        <div class="asset-balance">$0.00</div>
+                    </div>
+                    <div class="asset-actions">
+                        <button class="asset-btn" onclick="showInvestments()">View</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transactions Tab -->
+        <div id="transactions" class="wallet-content">
+            <div class="transactions-list">
+                <div class="transaction-header">
+                    <div class="transaction-date">Date</div>
+                    <div class="transaction-type">Type</div>
+                    <div class="transaction-amount">Amount</div>
+                    <div class="transaction-status">Status</div>
+                </div>
+                <div class="transaction-item">
+                    <div class="transaction-date">No transactions yet</div>
+                    <div class="transaction-type"></div>
+                    <div class="transaction-amount"></div>
+                    <div class="transaction-status"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Security Tab -->
+        <div id="security" class="wallet-content">
+            <div class="security-settings">
+                <div class="security-section">
+                    <h3>Multi-Signature</h3>
+                    <div class="security-status">Active</div>
+                </div>
+                <div class="security-section">
+                    <h3>Family Recovery</h3>
+                    <div class="security-status">Not Set Up</div>
+                    <button class="security-btn" onclick="setupFamilyRecovery()">Set Up</button>
+                </div>
+                <div class="security-section">
+                    <h3>ZK-Validation</h3>
+                    <div class="security-status">Enabled</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div id="settings" class="wallet-content">
+            <div class="settings-grid">
+                <div class="setting-item">
+                    <div class="setting-label">Theme</div>
+                    <select class="setting-select" onchange="changeTheme(this.value)">
+                        <option value="dark">Dark</option>
+                        <option value="light">Light</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">Language</div>
+                    <select class="setting-select" onchange="changeLanguage(this.value)">
+                        <option value="en">English</option>
+                        <option value="es">Español</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">Notifications</div>
+                    <div class="setting-toggle" onclick="toggleNotifications()">
+                        <div class="toggle-btn"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deposit Modal -->
+    <div id="depositModal" class="modal">
+        <div class="modal-content">
+            <h2>Deposit Funds</h2>
+            <form onsubmit="handleDeposit(event)">
+                <div class="form-group">
+                    <label>Amount</label>
+                    <input type="number" id="depositAmount" required>
+                </div>
+                <div class="form-group">
+                    <label>Currency</label>
+                    <select id="depositCurrency" required>
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                    </select>
+                </div>
+                <button type="submit" class="modal-btn">Deposit</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Withdraw Modal -->
+    <div id="withdrawModal" class="modal">
+        <div class="modal-content">
+            <h2>Withdraw Funds</h2>
+            <form onsubmit="handleWithdraw(event)">
+                <div class="form-group">
+                    <label>Amount</label>
+                    <input type="number" id="withdrawAmount" required>
+                </div>
+                <div class="form-group">
+                    <label>Currency</label>
+                    <select id="withdrawCurrency" required>
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                    </select>
+                </div>
+                <button type="submit" class="modal-btn">Withdraw</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Send Modal -->
+    <div id="sendModal" class="modal">
+        <div class="modal-content">
+            <h2>Send Funds</h2>
+            <form onsubmit="handleSend(event)">
+                <div class="form-group">
+                    <label>Recipient</label>
+                    <input type="text" id="recipient" required>
+                </div>
+                <div class="form-group">
+                    <label>Amount</label>
+                    <input type="number" id="sendAmount" required>
+                </div>
+                <div class="form-group">
+                    <label>Currency</label>
+                    <select id="sendCurrency" required>
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                    </select>
+                </div>
+                <button type="submit" class="modal-btn">Send</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Receive Modal -->
+    <div id="receiveModal" class="modal">
+        <div class="modal-content">
+            <h2>Receive Funds</h2>
+            <div class="receive-info">
+                <div class="receive-address">
+                    <h3>Receive Address</h3>
+                    <div id="receiveAddress">0x...</div>
+                </div>
+                <div class="receive-qr">
+                    <h3>QR Code</h3>
+                    <div id="qrCode"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Key Recovery Modal -->
+    <div id="keyRecoveryModal" class="modal">
+        <div class="modal-content">
+            <h2>Advanced Key Recovery</h2>
+            <form onsubmit="handleKeyRecovery(event)">
+                <div class="form-group">
+                    <label>Seed Phrase or Private Key</label>
+                    <input type="text" id="recoveryKey" required>
+                </div>
+                <div class="form-group">
+                    <label>Network</label>
+                    <select id="recoveryNetwork" required>
+                        <option value="ethereum">Ethereum</option>
+                        <option value="bitcoin">Bitcoin</option>
+                        <option value="bhe">BHE</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Key Tree Generation</label>
+                    <div class="key-tree-options">
+                        <div class="tree-depth">
+                            <label>Depth</label>
+                            <input type="number" id="treeDepth" value="5" min="1" max="10">
+                        </div>
+                        <div class="tree-width">
+                            <label>Width</label>
+                            <input type="number" id="treeWidth" value="3" min="1" max="5">
+                        </div>
+                        <div class="tree-type">
+                            <label>Tree Type</label>
+                            <select id="treeType">
+                                <option value="bip32">BIP32</option>
+                                <option value="legacy">Legacy</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="modal-btn">Generate Key Tree & Scan</button>
+            </form>
+            <div id="recoveryResults" class="scan-results">
+                <div class="result-header">
+                    <div>Address</div>
+                    <div>Balance</div>
+                    <div>Transactions</div>
+                    <div>Path</div>
+                    <div>Actions</div>
+                </div>
+                <div id="resultsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Page Visualization -->
+    <section class="main-visualization">
+        <div class="visualization-container">
+            <canvas id="mainSphere" class="sphere-canvas"></canvas>
+            <div class="visualization-overlay">
+                <h2>Market Prediction Sphere</h2>
+                <p>Real-time asset visualization</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Prediction Sphere Visualization -->
+    <section class="prediction-visualization">
+        <div class="visualization-container">
+            <canvas id="predictionSphere" class="sphere-canvas"></canvas>
+            <div class="visualization-overlay">
+                <h2>Price Prediction Model</h2>
+                <p>AI-powered market analysis</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Main Sphere Visualization
+        const mainScene = new THREE.Scene();
+        const mainCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const mainRenderer = new THREE.WebGLRenderer({
+            canvas: document.getElementById('mainSphere'),
+            antialias: true,
+            alpha: true
+        });
+
+        // Create main sphere
+        const mainSphere = new THREE.Mesh(
+            new THREE.SphereGeometry(1, 32, 32),
+            new THREE.MeshPhongMaterial({
+                color: 0x00a8ff,
+                transparent: true,
+                opacity: 0.8,
+                wireframe: false,
+                shininess: 100,
+                specular: 0x444444
+            })
+        );
+
+        // Create particles
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 500;
+        const posArray = new Float32Array(particlesCount * 3);
+
+        for(let i = 0; i < particlesCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 10;
+        }
+
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const particlesMaterial = new THREE.PointsMaterial({
+            color: 0x00a8ff,
+            size: 0.02,
+            transparent: true
+        });
+        const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+
+        // Add to scene
+        mainScene.add(mainSphere);
+        mainScene.add(particles);
+
+        // Setup lights
+        mainScene.add(new THREE.AmbientLight(0x404040));
+        const mainPointLight = new THREE.PointLight(0xffffff, 1);
+        mainPointLight.position.set(0, 0, 5);
+        mainScene.add(mainPointLight);
+
+        // Camera position
+        mainCamera.position.z = 5;
+
+        // Renderer setup
+        mainRenderer.setSize(window.innerWidth, 500);
+        mainRenderer.setPixelRatio(window.devicePixelRatio);
+
+        // Prediction Sphere Visualization
+        const predictionScene = new THREE.Scene();
+        const predictionCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const predictionRenderer = new THREE.WebGLRenderer({
+            canvas: document.getElementById('predictionSphere'),
+            antialias: true,
+            alpha: true
+        });
+
+        // Create prediction sphere
+        const predictionSphere = new THREE.Mesh(
+            new THREE.SphereGeometry(1, 32, 32),
+            new THREE.MeshPhongMaterial({
+                color: 0x00a8ff,
+                transparent: true,
+                opacity: 0.8,
+                wireframe: false,
+                shininess: 100,
+                specular: 0x444444
+            })
+        );
+
+        // Create prediction particles
+        const predictionParticlesGeometry = new THREE.BufferGeometry();
+        const predictionParticlesCount = 300;
+        const predictionPosArray = new Float32Array(predictionParticlesCount * 3);
+
+        for(let i = 0; i < predictionParticlesCount * 3; i++) {
+            predictionPosArray[i] = (Math.random() - 0.5) * 8;
+        }
+
+        predictionParticlesGeometry.setAttribute('position', new THREE.BufferAttribute(predictionPosArray, 3));
+        const predictionParticlesMaterial = new THREE.PointsMaterial({
+            color: 0x00a8ff,
+            size: 0.03,
+            transparent: true
+        });
+        const predictionParticles = new THREE.Points(predictionParticlesGeometry, predictionParticlesMaterial);
+
+        // Add to prediction scene
+        predictionScene.add(predictionSphere);
+        predictionScene.add(predictionParticles);
+
+        // Setup prediction lights
+        predictionScene.add(new THREE.AmbientLight(0x404040));
+        const predictionPointLight = new THREE.PointLight(0xffffff, 1);
+        predictionPointLight.position.set(0, 0, 5);
+        predictionScene.add(predictionPointLight);
+
+        // Prediction camera position
+        predictionCamera.position.z = 5;
+
+        // Prediction renderer setup
+        predictionRenderer.setSize(window.innerWidth, 500);
+        predictionRenderer.setPixelRatio(window.devicePixelRatio);
+
+        // Animation clock
+        const clock = new THREE.Clock();
+
+        // Animation function
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Update main sphere
+            const t = clock.getElapsedTime();
+            mainSphere.rotation.x = t * 0.1;
+            mainSphere.rotation.y = t * 0.2;
+
+            // Update main particles
+            const mainPos = particlesGeometry.attributes.position;
+            for(let i = 0; i < particlesCount * 3; i++) {
+                mainPos.setXYZ(
+                    i,
+                    Math.sin(t + i) * 2,
+                    Math.cos(t + i) * 2,
+                    Math.sin(t * 0.5 + i) * 2
+                );
+            }
+            mainPos.needsUpdate = true;
+
+            // Update prediction sphere
+            predictionSphere.rotation.x = t * 0.15;
+            predictionSphere.rotation.y = t * 0.25;
+
+            // Update prediction particles
+            const predictionPos = predictionParticlesGeometry.attributes.position;
+            for(let i = 0; i < predictionParticlesCount * 3; i++) {
+                predictionPos.setXYZ(
+                    i,
+                    Math.sin(t * 1.5 + i) * 1.5,
+                    Math.cos(t * 1.5 + i) * 1.5,
+                    Math.sin(t * 0.75 + i) * 1.5
+                );
+            }
+            predictionPos.needsUpdate = true;
+
+            // Render both scenes
+            mainRenderer.render(mainScene, mainCamera);
+            predictionRenderer.render(predictionScene, predictionCamera);
+        }
+
+        // Handle window resize
+        function onWindowResize() {
+            mainCamera.aspect = window.innerWidth / 500;
+            mainCamera.updateProjectionMatrix();
+            mainRenderer.setSize(window.innerWidth, 500);
+
+            predictionCamera.aspect = window.innerWidth / 500;
+            predictionCamera.updateProjectionMatrix();
+            predictionRenderer.setSize(window.innerWidth, 500);
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            animate();
+            window.addEventListener('resize', onWindowResize, false);
+        });
+    </script>
+
+    <!-- Ecosystem Overview -->
+    <section class="platform-section" id="ecosystem">
+        <div class="section-header">
+            <h2>The Complete BHE Ecosystem</h2>
+            <p>An AI-powered, self-verifying network of interconnected components</p>
+        </div>
+        
+        <div class="ecosystem-diagram">
+            <div id="ecosystem-visualization"></div>
+            <div class="diagram-legend">
+                <div class="legend-item">
+                    <div class="legend-color core"></div>
+                    <div class="legend-text">Core Protocol</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color wallet"></div>
+                    <div class="legend-text">XDEX Wallet</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color bridge"></div>
+                    <div class="legend-text">Layer 4 Bridge</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color security"></div>
+                    <div class="legend-text">Security Components</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color liquidity"></div>
+                    <div class="legend-text">Liquidity Pools</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color ai"></div>
+                    <div class="legend-text">AI Systems</div>
+                </div>
+            </div>
+        </div>
+        <div class="vault-door-container">
+            <div class="vault-door" onclick="openKnoxWallet()">
+                <div class="door-icon">🔒</div>
+                <div class="door-text">KNOX WALLET</div>
+            </div>
+            <div class="knox-recovery-container">
+                <div class="knox-recovery-icon">🔄</div>
+                <button class="knox-recovery-button" onclick="openKnoxRecovery()">
+                    <span class="pulse-ring"></span>
+                    Knox Recovery
+                </button>
+                <div class="knox-recovery-text">Secure asset recovery</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Investment Wallet -->
+    <section class="platform-section" id="investment">
+        <div class="section-header">
+            <h2>Investment Wallet</h2>
+            <p>For Purchases and Cash Transactions Only</p>
+        </div>
+        
+        <div class="investment-container">
+            <!-- Investment Controls -->
+            <div class="investment-controls">
+                <div class="investment-actions">
+                    <button class="investment-btn" onclick="depositCash()">
+                        <span class="pulse-ring"></span>
+                        Deposit Cash
+                    </button>
+                    <button class="investment-btn" onclick="withdrawCash()">
+                        <span class="pulse-ring"></span>
+                        Withdraw Cash
+                    </button>
+                </div>
+
+                <div class="investment-info">
+                    <div class="balance-info">
+                        <h3>Current Balance</h3>
+                        <div class="balance-amount">
+                            <span id="cashBalance">$0.00</span>
+                            <span class="balance-currency">USD</span>
+                        </div>
+                    </div>
+
+                    <div class="investment-metrics">
+                        <div class="metric">
+                            <div class="metric-value">0%</div>
+                            <div class="metric-label">Current APY</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">0</div>
+                            <div class="metric-label">Active Investments</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Important Notice -->
+            <div class="platform-notice">
+                <div class="notice-icon">ℹ️</div>
+                <div class="notice-text">
+                    <h3>Important Notice</h3>
+                    <p>This platform is for investment and cash transactions only. Trading is available on the Obsidian Gates platform.</p>
+                </div>
+            </div>
+        </div>
+        <div class="vault-door-container">
+            <div class="vault-door" onclick="openKnoxWallet()">
+                <div class="door-icon">🔒</div>
+                <div class="door-text">KNOX WALLET</div>
+            </div>
+            <div class="knox-recovery-container">
+                <div class="knox-recovery-icon">🔄</div>
+                <button class="knox-recovery-button" onclick="openKnoxRecovery()">
+                    <span class="pulse-ring"></span>
+                    Knox Recovery
+                </button>
+                <div class="knox-recovery-text">Secure asset recovery</div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Investment Functions
+        async function depositCash() {
+            try {
+                const amount = prompt('Enter amount to deposit:');
+                if (amount && !isNaN(amount)) {
+                    const tx = await contract.depositCash(amount);
+                    await tx.wait();
+                    updateBalance();
+                    alert('Cash deposited successfully');
+                }
+            } catch (error) {
+                console.error('Deposit failed:', error);
+                alert('Deposit failed');
+            }
+        }
+
+        async function withdrawCash() {
+            try {
+                const amount = prompt('Enter amount to withdraw:');
+                if (amount && !isNaN(amount)) {
+                    const tx = await contract.withdrawCash(amount);
+                    await tx.wait();
+                    updateBalance();
+                    alert('Cash withdrawn successfully');
+                }
+            } catch (error) {
+                console.error('Withdrawal failed:', error);
+                alert('Withdrawal failed');
+            }
+        }
+
+        async function updateBalance() {
+            try {
+                const balance = await contract.getCashBalance();
+                document.getElementById('cashBalance').textContent = `$${balance}`;
+            } catch (error) {
+                console.error('Failed to update balance:', error);
+            }
+        }
+
+        // Initialize on load
+        window.addEventListener('load', async () => {
+            await updateBalance();
+        });
+    </script>
+
+    <!-- Investments Page -->
+    <section class="platform-section" id="investments">
+        <div class="section-header">
+            <h2>Investment Opportunities</h2>
+            <p>High-security trading pairs with detailed analytics</p>
+        </div>
+
+        <!-- Hot Pairs -->
+        <div class="hot-pairs-container">
+            <h3>Hot Trading Pairs</h3>
+            <div class="pairs-grid">
+                <!-- BHE/USDC Pair -->
+                <div class="pair-card featured-pair">
+                    <div class="pair-header">
+                        <div class="pair-name">BHE/USDC</div>
+                        <div class="pair-badge">High Volume</div>
+                    </div>
+                    <div class="pair-metrics">
+                        <div class="metric">
+                            <div class="metric-value">1.25</div>
+                            <div class="metric-label">Current Price</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">+2.50%</div>
+                            <div class="metric-label">24h Change</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">$324.0M</div>
+                            <div class="metric-label">24h Volume</div>
+                        </div>
+                    </div>
+                    <div class="pair-security">
+                        <h4>Security Features</h4>
+                        <ul>
+                            <li>ZK-Validated Transactions</li>
+                            <li>Multi-Signature Vaults</li>
+                            <li>AI-Powered Fraud Detection</li>
+                            <li>Zero-Knowledge Proofs</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- NaS/BHE Pair -->
+                <div class="pair-card">
+                    <div class="pair-header">
+                        <div class="pair-name">NaS/BHE</div>
+                        <div class="pair-badge">Stable</div>
+                    </div>
+                    <div class="pair-metrics">
+                        <div class="metric">
+                            <div class="metric-value">0.0095</div>
+                            <div class="metric-label">Current Rate</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">-0.15%</div>
+                            <div class="metric-label">24h Change</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">$152.4M</div>
+                            <div class="metric-label">24h Volume</div>
+                        </div>
+                    </div>
+                    <div class="pair-security">
+                        <h4>Security Features</h4>
+                        <ul>
+                            <li>Blacklist Protection</li>
+                            <li>Family Recovery</li>
+                            <li>Transaction Encryption</li>
+                            <li>AI Bank Buddy</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- USDC/NaS Pair -->
+                <div class="pair-card">
+                    <div class="pair-header">
+                        <div class="pair-name">USDC/NaS</div>
+                        <div class="pair-badge">Low Risk</div>
+                    </div>
+                    <div class="pair-metrics">
+                        <div class="metric">
+                            <div class="metric-value">105.42</div>
+                            <div class="metric-label">Current Rate</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">+0.05%</div>
+                            <div class="metric-label">24h Change</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">$85.2M</div>
+                            <div class="metric-label">24h Volume</div>
+                        </div>
+                    </div>
+                    <div class="pair-security">
+                        <h4>Security Features</h4>
+                        <ul>
+                            <li>Smart Contract Audit</li>
+                            <li>Transaction Monitoring</li>
+                            <li>Multi-Factor Auth</li>
+                            <li>Decentralized Verification</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Security Details -->
+        <div class="security-section">
+            <h3>High Security Features</h3>
+            <div class="security-features">
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h4>ZK-Validated Transactions</h4>
+                    <p>Every transaction is verified using zero-knowledge proofs to ensure maximum privacy and security.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h4>Multi-Signature Vaults</h4>
+                    <p>Assets are stored in multi-signature vaults requiring multiple validator signatures for maximum security</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h4>AI-Powered Security</h4>
+                    <p>Bank Buddy AI monitors transactions in real-time for potential fraud and suspicious activities.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h4>Decentralized Verification</h4>
+                    <p>All transactions are verified by a decentralized network of validators to prevent single points of failure.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="vault-door-container">
+            <div class="vault-door" onclick="openKnoxWallet()">
+                <div class="door-icon">🔒</div>
+                <div class="door-text">KNOX WALLET</div>
+            </div>
+            <div class="knox-recovery-container">
+                <div class="knox-recovery-icon">🔄</div>
+                <button class="knox-recovery-button" onclick="openKnoxRecovery()">
+                    <span class="pulse-ring"></span>
+                    Knox Recovery
+                </button>
+                <div class="knox-recovery-text">Secure asset recovery</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security Architecture -->
+    <section class="platform-section dark-section">
+        <div class="section-header">
+            <h2>Security Architecture</h2>
+            <p>Multi-layered protection with AI enhancement</p>
+        </div>
+        
+        <div class="security-layers">
+            <div class="layer-visualization">
+                <!-- Security layers visualization will be rendered here -->
+                <svg id="security-layers-svg" width="100%" height="400"></svg>
+            </div>
+            
+            <div class="security-features">
+                <div class="security-feature">
+                    <h3>Dual PGP Encryption</h3>
+                    <p>Two-layer encryption for all wallets and data transactions, ensuring maximum privacy.</p>
+                </div>
+                
+                <div class="security-feature">
+                    <h3>AI-Driven Monitoring</h3>
+                    <p>Real-time transaction analysis with machine learning to detect suspicious patterns.</p>
+                </div>
+                
+                <div class="security-feature">
+                    <h3>Zero-Knowledge Proofs</h3>
+                    <p>Verify transaction validity without revealing sensitive information.</p>
+                </div>
+                
+                <div class="security-feature">
+                    <h3>Multi-Signature Protection</h3>
+                    <p>Critical operations require multiple signatures with hardware-level validation.</p>
+                </div>
+                
+                <div class="security-feature">
+                    <h3>Continuous Error Handling</h3>
+                    <p>Automated recovery with continuous monitoring and pickup to prevent data loss.</p>
+                </div>
+            </div>
+        </div>
+        <div class="vault-door-container">
+            <div class="vault-door" onclick="openKnoxWallet()">
+                <div class="door-icon">🔒</div>
+                <div class="door-text">KNOX WALLET</div>
+            </div>
+            <div class="knox-recovery-container">
+                <div class="knox-recovery-icon">🔄</div>
+                <button class="knox-recovery-button" onclick="openKnoxRecovery()">
+                    <span class="pulse-ring"></span>
+                    Knox Recovery
+                </button>
+                <div class="knox-recovery-text">Secure asset recovery</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Smart Contract Status -->
+    <section class="platform-section">
+        <div class="section-header">
+            <h2>Smart Contract Verification</h2>
+            <p>Contract Status: <span id="contractStatus">Verifying...</span></p>
+        </div>
+        
+        <div class="contract-verification">
+            <div class="contract-address">
+                <h3>Contract Address</h3>
+                <div id="contractAddress">0x...</div>
+                <button onclick="verifyContract()">Verify Contract</button>
+            </div>
+
+            <div class="wallet-connection">
+                <h3>Wallet Connection</h3>
+                <div id="walletStatus">Not Connected</div>
+                <button onclick="connectWallet()">Connect Wallet</button>
+            </div>
+
+            <div class="transaction-status">
+                <h3>Transaction Status</h3>
+                <div id="transactionStatus">No Active Transactions</div>
+            </div>
+        </div>
+        <div class="vault-door-container">
+            <div class="vault-door" onclick="openKnoxWallet()">
+                <div class="door-icon">🔒</div>
+                <div class="door-text">KNOX WALLET</div>
+            </div>
+            <div class="knox-recovery-container">
+                <div class="knox-recovery-icon">🔄</div>
+                <button class="knox-recovery-button" onclick="openKnoxRecovery()">
+                    <span class="pulse-ring"></span>
+                    Knox Recovery
+                </button>
+                <div class="knox-recovery-text">Secure asset recovery</div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Smart Contract Verification
+        async function verifyContract() {
+            try {
+                const contract = new Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
+                const isValid = await contract.isValid();
+                document.getElementById('contractStatus').textContent = isValid ? 'Verified' : 'Invalid';
+                return isValid;
+            } catch (error) {
+                console.error('Contract verification failed:', error);
+                document.getElementById('contractStatus').textContent = 'Verification Failed';
+                return false;
+            }
+        }
+
+        // Wallet Connection
+        async function connectWallet() {
+            try {
+                const accounts = await window.ethereum.request({
+                    method: 'eth_requestAccounts'
+                });
+                const address = accounts[0];
+                document.getElementById('walletStatus').textContent = `Connected: ${address}`;
+                return true;
+            } catch (error) {
+                console.error('Wallet connection failed:', error);
+                document.getElementById('walletStatus').textContent = 'Connection Failed';
+                return false;
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', async () => {
+            const isValid = await verifyContract();
+            if (isValid) {
+                const isConnected = await connectWallet();
+                if (isConnected) {
+                    document.getElementById('transactionStatus').textContent = 'Ready for Transactions';
+                }
+            }
+        });
+    </script>
+
+    <!-- Aggro Vault -->
+    <section class="platform-section" id="aggro-vault">
+        <div class="section-header">
+            <h2>Aggro Vault</h2>
+            <p>The ultimate secure liquidity hub with multi-sig protection</p>
+        </div>
+        <div class="vault-container">
+            <div class="vault-graphic">
+                <div class="vault-animation">
+                    <!-- 3D Vault animation goes here -->
+                    <div class="vault-door"></div>
+                    <div class="vault-lock"></div>
+                    <canvas id="vault-canvas"></canvas>
+                </div>
+            </div>
+            <div class="vault-features">
+                <div class="vault-feature">
+                    <div class="feature-icon">🔐</div>
+                    <h3>Multi-Signature Security</h3>
+                    <p>Transactions require multiple validator signatures for maximum security</p>
+                </div>
+                <div class="vault-feature">
+                    <div class="feature-icon">🌐</div>
+                    <h3>XDEX Node Integration</h3>
+                    <p>Mirrors your funds to your home node for full control</p>
+                </div>
+                <div class="vault-feature">
+                    <div class="feature-icon">👪</div>
+                    <h3>Family Recovery</h3>
+                    <p>Recover access through trusted family members</p>
+                </div>
+                <div class="vault-feature">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>ZK-Validated Claims</h3>
+                    <p>Prove ownership without revealing private information</p>
+                </div>
+            </div>
+        </div>
+        <div class="vault-door-container">
+            <div class="vault-door" onclick="openKnoxWallet()">
+                <div class="door-icon">🔒</div>
+                <div class="door-text">KNOX WALLET</div>
+            </div>
+            <div class="knox-recovery-container">
+                <div class="knox-recovery-icon">🔄</div>
+                <button class="knox-recovery-button" onclick="openKnoxRecovery()">
+                    <span class="pulse-ring"></span>
+                    Knox Recovery
+                </button>
+                <div class="knox-recovery-text">Secure asset recovery</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+        <h2>Ready to Experience the Future of Finance?</h2>
+        <p>Join the BHE ecosystem and take full control of your digital assets with unmatched security.</p>
+        <div class="cta-buttons">
+            <button class="cta-button primary">Launch App</button>
+            <button class="cta-button secondary">Join Community</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-grid">
+            <div class="footer-column">
+                <h3>ExDEX Platform</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#trading">Trading</a></li>
+                    <li><a href="index.html#liquidity">Liquidity Pools</a></li>
+                    <li><a href="index.html#investment">Investment</a></li>
+                    <li><a href="#aggro-vault">Aggro Vault</a></li>
+                    <li><a href="index.html#card-services">Card Services</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">API</a></li>
+                    <li><a href="#">Smart Contracts</a></li>
+                    <li><a href="#">Security Audits</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Community</h3>
+                <ul>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">Discord</a></li>
+                    <li><a href="#">Telegram</a></li>
+                    <li><a href="#">GitHub</a></li>
+                    <li><a href="#">Medium</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Newsletter</h3>
+                <p>Get the latest updates and announcements</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Enter your email">
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="copyright"> 2025 ExDEX - Bitcoin Hardened Ethereum. All rights reserved.</div>
+            <div class="footer-links">
+                <a href="#">Terms</a>
+                <a href="#">Privacy</a>
+                <a href="#">Cookies</a>
+            </div>
+        </div>
+    </footer>
+
+    <div class="ai-persona">
+        <div class="samantha-hologram"></div>
+        <div class="greeting">
+            <h2>Welcome to the Future of Finance</h2>
+            <p class="samantha-voice">"Greetings. I'm Samantha, your quantum financial interface. Let's secure your legacy."</p>
+        </div>
+        <div class="voice-controls">
+            <button class="vault-tec-btn voice-command" data-action="authenticate">
+                <span class="pulse-ring"></span>
+                Initialize Biometric Auth
+            </button>
+            <div class="frequency-display"></div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, 1143/500, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({canvas: document.querySelector('#vault-canvas')});
+
+        const geometry = new THREE.SphereGeometry(3.14159, 64, 64);
+        const material = new THREE.MeshPhongMaterial({
+            color: 0x00a8ff,
+            shininess: 100,
+            specular: 0x444444
+        });
+
+        const sphere = new THREE.Mesh(geometry, material);
+        scene.add(sphere);
+
+        const light = new THREE.PointLight(0xffffff, 1.5, 100);
+        light.position.set(10, 10, 10);
+        scene.add(light);
+
+        camera.position.z = 8;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            sphere.rotation.x += 0.01;
+            sphere.rotation.y += 0.01;
+            renderer.render(scene, camera);
+        }
+        animate();
+    </script>
+    <script src="js/ecosystem.js"></script>
+    <div class="badge-inner">
+        <div class="badge-icon">🛡️</div>
+        <div class="badge-text">
+            SECURED BY AIRFORCE ONE
+            <div class="badge-subtext">
+                100% Trustless Smart Contracts
+                <a href="smartcontract://0x...AF1" class="verify-link">
+                    [Verify On-Chain]
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openKnoxWallet() {
+            document.getElementById('knoxWallet').style.display = 'block';
+        }
+
+        function closeKnoxWallet() {
+            document.getElementById('knoxWallet').style.display = 'none';
+        }
+
+        function showTab(tabId) {
+            document.querySelectorAll('.wallet-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[onclick="showTab('${tabId}')"]`).classList.add('active');
+        }
+
+        function showDepositModal() {
+            document.getElementById('depositModal').style.display = 'flex';
+        }
+
+        function closeDepositModal() {
+            document.getElementById('depositModal').style.display = 'none';
+        }
+
+        function showWithdrawModal() {
+            document.getElementById('withdrawModal').style.display = 'flex';
+        }
+
+        function closeWithdrawModal() {
+            document.getElementById('withdrawModal').style.display = 'none';
+        }
+
+        function showSendModal() {
+            document.getElementById('sendModal').style.display = 'flex';
+        }
+
+        function closeSendModal() {
+            document.getElementById('sendModal').style.display = 'none';
+        }
+
+        function showReceiveModal() {
+            document.getElementById('receiveModal').style.display = 'flex';
+        }
+
+        function closeReceiveModal() {
+            document.getElementById('receiveModal').style.display = 'none';
+        }
+
+        function handleDeposit(event) {
+            event.preventDefault();
+            const amount = document.getElementById('depositAmount').value;
+            const currency = document.getElementById('depositCurrency').value;
+            // Add deposit logic here
+            alert(`Depositing ${amount} ${currency}`);
+            closeDepositModal();
+        }
+
+        function handleWithdraw(event) {
+            event.preventDefault();
+            const amount = document.getElementById('withdrawAmount').value;
+            const currency = document.getElementById('withdrawCurrency').value;
+            // Add withdraw logic here
+            alert(`Withdrawing ${amount} ${currency}`);
+            closeWithdrawModal();
+        }
+
+        function handleSend(event) {
+            event.preventDefault();
+            const recipient = document.getElementById('recipient').value;
+            const amount = document.getElementById('sendAmount').value;
+            const currency = document.getElementById('sendCurrency').value;
+            // Add send logic here
+            alert(`Sending ${amount} ${currency} to ${recipient}`);
+            closeSendModal();
+        }
+
+        function setupFamilyRecovery() {
+            // Add family recovery setup logic here
+            alert('Setting up family recovery...');
+        }
+
+        function changeTheme(theme) {
+            // Add theme change logic here
+            alert(`Changed theme to ${theme}`);
+        }
+
+        function changeLanguage(lang) {
+            // Add language change logic here
+            alert(`Changed language to ${lang}`);
+        }
+
+        function toggleNotifications() {
+            const toggle = document.querySelector('.setting-toggle');
+            toggle.classList.toggle('active');
+        }
+
+        // Close modals when clicking outside
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.style.display = 'none';
+            }
+        });
+
+        // Close wallet when clicking outside
+        document.addEventListener('click', (e) => {
+            if (e.target.id === 'knoxWallet') {
+                closeKnoxWallet();
+            }
+        });
+    </script>
+
+    <script>
+        function handleKeyRecovery(event) {
+            event.preventDefault();
+            
+            const key = document.getElementById('recoveryKey').value;
+            const network = document.getElementById('recoveryNetwork').value;
+            const depth = parseInt(document.getElementById('treeDepth').value);
+            const width = parseInt(document.getElementById('treeWidth').value);
+            const treeType = document.getElementById('treeType').value;
+
+            // Generate and display the key tree
+            const tree = await generateKeyTree(key, network, depth, width, treeType);
+            displayKeyTree(tree);
+
+            // Start scanning for funds and transactions
+            scanTreeForFunds(tree);
+        }
+
+        async function generateKeyTree(key, network, depth, width, type) {
+            const tree = [];
+            
+            // Generate initial path based on type
+            let basePath = '';
+            switch(type) {
+                case 'bip32':
+                    basePath = 'm/44\'/';
+                    break;
+                case 'legacy':
+                    basePath = 'm/';
+                    break;
+                case 'custom':
+                    basePath = 'm/';
+                    break;
+            }
+
+            // Generate tree recursively
+            function generateBranch(currentPath, currentDepth) {
+                if (currentDepth >= depth) return;
+
+                for (let i = 0; i < width; i++) {
+                    const newPath = `${currentPath}${i}\'/`;
+                    const address = generateAddress(key, network, newPath);
+                    const balance = await getBalance(address, network);
+                    const transactions = await getTransactionCount(address, network);
+
+                    tree.push({
+                        path: newPath,
+                        address: address,
+                        balance: balance,
+                        transactions: transactions
+                    });
+
+                    generateBranch(newPath, currentDepth + 1);
+                }
+            }
+
+            generateBranch(basePath, 0);
+            return tree;
+        }
+
+        function displayKeyTree(tree) {
+            const resultsList = document.getElementById('resultsList');
+            resultsList.innerHTML = ''; // Clear previous results
+
+            tree.forEach(node => {
+                const item = document.createElement('div');
+                item.className = 'tree-node';
+                item.innerHTML = `
+                    <div class="address">${node.address}</div>
+                    <div class="balance">${formatBalance(node.balance, node.network)}</div>
+                    <div class="transactions">${node.transactions} txs</div>
+                    <div class="path">${node.path}</div>
+                    <div class="actions">
+                        <button class="action-btn" onclick="claimAssets('${node.address}')">Claim</button>
+                        <button class="action-btn" onclick="viewDetails('${node.address}')">Details</button>
+                    </div>
+                `;
+                resultsList.appendChild(item);
+            });
+        }
+
+        async function scanTreeForFunds(tree) {
+            const resultsList = document.getElementById('resultsList');
+            
+            // Show loading state
+            const loading = document.createElement('div');
+            loading.className = 'loading';
+            loading.innerHTML = 'Scanning for funds and transactions...';
+            resultsList.appendChild(loading);
+
+            // Scan each node in the tree
+            for (const node of tree) {
+                try {
+                    // Check for funds
+                    if (node.balance > 0) {
+                        await checkForUnclaimedFunds(node.address, node.network);
+                    }
+
+                    // Check for transactions
+                    if (node.transactions > 0) {
+                        await checkTransactionHistory(node.address, node.network);
+                    }
+                } catch (error) {
+                    console.error(`Error scanning node ${node.path}:`, error);
+                }
+            }
+        }
+
+        async function checkForUnclaimedFunds(address, network) {
+            // Simulate checking for unclaimed funds
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    const hasUnclaimed = Math.random() > 0.8;
+                    if (hasUnclaimed) {
+                        const amount = Math.random() * 10000;
+                        console.log(`Found unclaimed funds: ${formatBalance(amount, network)} at ${address}`);
+                    }
+                    resolve();
+                }, 500);
+            });
+        }
+
+        async function checkTransactionHistory(address, network) {
+            // Simulate checking transaction history
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    const hasPending = Math.random() > 0.7;
+                    if (hasPending) {
+                        const pendingAmount = Math.random() * 1000;
+                        console.log(`Found pending transactions: ${formatBalance(pendingAmount, network)} at ${address}`);
+                    }
+                    resolve();
+                }, 500);
+            });
+        }
+
+        function generateAddress(key, network, path) {
+            // Simulate address generation based on network
+            switch(network) {
+                case 'ethereum':
+                    return '0x' + Math.random().toString(16).substring(2);
+                case 'bitcoin':
+                    return 'bc1' + Math.random().toString(16).substring(2);
+                case 'bhe':
+                    return 'bhe' + Math.random().toString(16).substring(2);
+                default:
+                    return 'addr' + Math.random().toString(16).substring(2);
+            }
+        }
+
+        async function getBalance(address, network) {
+            // Simulate balance check
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    const balance = Math.random() * 100000;
+                    resolve(balance);
+                }, 300);
+            });
+        }
+
+        async function getTransactionCount(address, network) {
+            // Simulate transaction count check
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    const count = Math.floor(Math.random() * 100);
+                    resolve(count);
+                }, 300);
+            });
+        }
+
+        function formatBalance(balance, network) {
+            if (network === 'ethereum') {
+                return `${(balance / 1e18).toFixed(4)} ETH`;
+            } else if (network === 'bitcoin') {
+                return `${(balance / 1e8).toFixed(8)} BTC`;
+            } else {
+                return `${balance.toFixed(2)} BHE`;
+            }
+        }
+
+        function claimAssets(address) {
+            // Implement asset claiming logic
+            alert(`Claiming assets from address: ${address}`);
+        }
+
+        function viewDetails(address) {
+            // Implement details viewing logic
+            alert(`Viewing details for address: ${address}`);
+        }
+    </script>
+</body>
+</html>

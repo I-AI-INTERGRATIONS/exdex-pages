@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitcoin Transaction Manager</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Bitcoin Transaction Manager</h1>
+            <div class="network-status">
+                <span id="network-badge">Mainnet</span>
+                <span id="connection-status">Connected</span>
+            </div>
+        </header>
+
+        <div class="tab-buttons">
+            <button class="tab-button active" data-tab="tab-wallet">Wallet</button>
+            <button class="tab-button" data-tab="tab-rbf">RBF</button>
+            <button class="tab-button" data-tab="tab-cpfp">CPFP</button>
+            <button class="tab-button" data-tab="tab-history">Address History</button>
+            <button class="tab-button" data-tab="tab-pool-admin">Pool Contract Admin</button>
+            <button class="tab-button" data-tab="tab-bhe-ticker">BHE Ticker</button>
+        </div>
+
+        <div class="tab-content">
+            <!-- Wallet Tab -->
+            <div class="tab-pane active" id="wallet">
+                <div class="input-group">
+                    <label for="wallet-input">Enter Private Key or Seed Phrase (Any Format)</label>
+                    <textarea id="wallet-input" placeholder="Enter your private key (WIF), seed phrase, xprv, or any other key format..."></textarea>
+                    
+                    <div class="file-upload-container">
+                        <label for="wallet-file" class="file-upload-label">
+                            <i class="fas fa-file-upload" aria-hidden="true"></i> Upload Wallet File
+                            <span class="file-types">(QR, .dat, .json, .key, etc.)</span>
+                        </label>
+                        <input type="file" id="wallet-file" accept=".dat,.key,.json,.txt,image/*">
+                        <div id="file-name" class="file-name">No file selected</div>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button id="verify-wallet-btn" class="primary-btn">Verify Ownership</button>
+                        <button id="generate-new-key-btn" class="secondary-btn">Generate New Keys</button>
+                    </div>
+                </div>
+                
+                <div class="key-options hidden" id="key-options">
+                    <div class="key-options-header">
+                        <h3>Key Options</h3>
+                        <div class="info-bubble" id="key-options-info">
+                            <i class="fas fa-info-circle" aria-hidden="true"></i>
+                            <div class="info-bubble-content">
+                                <p>IF YOU'RE HAVING ISSUES PERFORMING A RBF OR RBF+CPFP, PRODUCE NEW KEY SET AND IMPORT!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="options-container">
+                        <div class="option-item">
+                            <input type="radio" id="use-existing-keys" name="key-option" value="existing" checked>
+                            <label for="use-existing-keys">Use Existing Keys</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="force-new-keyset" name="key-option" value="new">
+                            <label for="force-new-keyset">Force New Key Set Generation</label>
+                        </div>
+                    </div>
+                    <button id="load-wallet-btn" class="primary-btn">Load Wallet</button>
+                </div>
+                
+                <div class="wallet-info hidden" id="wallet-details">
+                    <h3>Wallet Information</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="label">Address (Legacy P2PKH):</span>
+                            <span class="value" id="legacy-address"></span>
+                            <button class="copy-btn" data-copy="legacy-address" title="Copy legacy address"><i class="fas fa-copy" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Address (SegWit P2SH):</span>
+                            <span class="value" id="segwit-address"></span>
+                            <button class="copy-btn" data-copy="segwit-address" title="Copy SegWit address"><i class="fas fa-copy" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Address (Native SegWit):</span>
+                            <span class="value" id="native-segwit-address"></span>
+                            <button class="copy-btn" data-copy="native-segwit-address" title="Copy Native SegWit address"><i class="fas fa-copy" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Balance:</span>
+                            <span class="value" id="wallet-balance">0.00000000 BTC</span>
+                            <button id="refresh-balance" class="icon-btn" title="Refresh balance"><i class="fas fa-sync-alt" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="transaction-section">
+                        <h3>Transaction Builder</h3>
+                        <div class="input-group">
+                            <label for="destination-address">Destination Address</label>
+                            <input type="text" id="destination-address" placeholder="Enter Bitcoin address to send to...">
+                            
+                            <label for="tx-amount">Amount (BTC)</label>
+                            <input type="number" id="tx-amount" placeholder="0.00000000" step="0.00000001" min="0">
+                            
+                            <div class="fee-slider">
+                                <label for="tx-fee-rate">Fee Rate (sat/vB)</label>
+                                <div class="slider-container">
+                                    <input type="range" id="tx-fee-rate" min="1" max="100" value="20">
+                                    <span id="tx-fee-rate-value">20 sat/vB</span>
+                                </div>
+                            </div>
+                            
+                            <button id="create-tx-btn" class="primary-btn">Create Transaction</button>
+                        </div>
+                    </div>
+                    
+                    <div class="utxo-section">
+                        <h3>Unspent Transaction Outputs (UTXOs)</h3>
+                        <button id="refresh-utxos" class="icon-btn" title="Refresh UTXOs"><i class="fas fa-sync-alt" aria-hidden="true"></i> Refresh UTXOs</button>
+                        <div class="utxo-list" id="utxo-list">
+                            <!-- UTXOs will be added here dynamically -->
+                            <div class="empty-state">No UTXOs found</div>
+                        </div>
+                    </div>
+                    
+                    <div class="key-history-section">
+                        <h3>Key History</h3>
+                        <div class="key-info">
+                            <div class="info-item">
+                                <span class="label">Key Type:</span>
+                                <span class="value" id="key-type">Unknown</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Derivation Path:</span>
+                                <span class="value" id="derivation-path">m/44'/0'/0'/0/0</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Extended Public Key:</span>
+                                <span class="value" id="xpub-key"></span>
+                                <button class="copy-btn" data-copy="xpub-key" title="Copy extended public key"><i class="fas fa-copy" aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RBF Tab -->
+            <div class="tab-pane" id="rbf">
+                <div class="section-header">
+                    <h3>Replace-By-Fee (RBF) Transaction</h3>
+                    <p>Increase the fee of an unconfirmed transaction to speed up confirmation.</p>
+                </div>
+                
+                <div class="input-group">
+                    <label for="rbf-txid">Transaction ID</label>
+                    <input type="text" id="rbf-txid" placeholder="Enter the transaction ID to replace...">
+                    <button id="load-tx-btn" class="secondary-btn">Load Transaction</button>
+                </div>
+                
+                <div class="tx-details hidden" id="rbf-tx-details">
+                    <h4>Transaction Details</h4>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="label">Current Fee:</span>
+                            <span class="value" id="current-fee">0 sat/vB</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Recommended Fee:</span>
+                            <span class="value" id="recommended-fee">0 sat/vB</span>
+                        </div>
+                    </div>
+                    
+                    <div class="fee-slider">
+                        <label for="new-fee-rate">New Fee Rate (sat/vB)</label>
+                        <div class="slider-container">
+                            <input type="range" id="new-fee-rate" min="1" max="100" value="20">
+                            <span id="fee-rate-value">20 sat/vB</span>
+                        </div>
+                    </div>
+                    
+                    <button id="rbf-submit-btn" class="primary-btn">Replace Transaction</button>
+                </div>
+            </div>
+
+            <!-- CPFP Tab -->
+            <div class="tab-pane" id="cpfp">
+                <div class="section-header">
+                    <h3>Child Pays For Parent (CPFP)</h3>
+                    <p>Create a child transaction with a higher fee to speed up an unconfirmed parent transaction.</p>
+                </div>
+                
+                <div class="input-group">
+                    <label for="cpfp-txid">Parent Transaction ID</label>
+                    <input type="text" id="cpfp-txid" placeholder="Enter the parent transaction ID...">
+                    <button id="load-parent-tx-btn" class="secondary-btn">Load Transaction</button>
+                </div>
+                
+                <div class="tx-details hidden" id="cpfp-tx-details">
+                    <h4>Parent Transaction Details</h4>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="label">Current Fee:</span>
+                            <span class="value" id="parent-fee">0 sat/vB</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Recommended Child Fee:</span>
+                            <span class="value" id="recommended-child-fee">0 sat/vB</span>
+                        </div>
+                    </div>
+                    
+                    <div class="fee-slider">
+                        <label for="child-fee-rate">Child Transaction Fee Rate (sat/vB)</label>
+                        <div class="slider-container">
+                            <input type="range" id="child-fee-rate" min="1" max="200" value="50">
+                            <span id="child-fee-rate-value">50 sat/vB</span>
+                        </div>
+                    </div>
+                    
+                    <button id="cpfp-submit-btn" class="primary-btn">Create Child Transaction</button>
+                </div>
+            </div>
+
+            <!-- Address History Tab -->
+            <div class="tab-pane" id="history">
+                <div class="section-header">
+                    <h3>Address Transaction History</h3>
+                </div>
+                
+                <div class="input-group">
+                    <label for="history-address">Bitcoin Address</label>
+                    <input type="text" id="history-address" placeholder="Enter a Bitcoin address...">
+                    <button id="load-history-btn" class="secondary-btn">Load History</button>
+                </div>
+                
+                <div class="history-container hidden" id="address-history">
+                    <h4>Transaction History</h4>
+                    <div class="filter-options">
+                        <select id="history-filter">
+                            <option value="all">All Transactions</option>
+                            <option value="received">Received</option>
+                            <option value="sent">Sent</option>
+                        </select>
+                    </div>
+                    
+                    <div class="transaction-list" id="tx-list">
+                        <!-- Transactions will be added here dynamically -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pool Contract Admin Tab -->
+            <div class="tab-pane" id="pool-admin">
+                <div class="section-header">
+                    <h3>Pool Contract Administration</h3>
+                    <p>Connect as owner of the pool contract to manage settings and permissions</p>
+                </div>
+                
+                <div class="admin-container">
+                    <div class="connection-status" id="connection-container">
+                        <div class="connection-info">
+                            <h4>Connection Status</h4>
+                            <div class="status-indicator">
+                                <span id="admin-connection-status">Disconnected</span>
+                                <div class="status-dot disconnected" id="admin-status-dot"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="wallet-connect-container">
+                            <h4>Connect with WalletConnect</h4>
+                            <div class="qr-container" id="wallet-connect-qr">
+                                <!-- QR code will be generated here -->
+                                <div class="qr-placeholder">QR Code will appear here</div>
+                            </div>
+                            <div class="button-group">
+                                <button id="generate-qr-btn" class="primary-btn">Generate QR Code</button>
+                                <button id="connect-wallet-btn" class="secondary-btn">Connect Wallet</button>
+                            </div>
+                        </div>
+                        
+                        <div class="google-pay-container">
+                            <h4>Link with Google Pay</h4>
+                            <div class="google-pay-info">
+                                <p>Link your Google Pay account for seamless transactions</p>
+                                <div class="google-pay-button-container">
+                                    <div id="google-pay-button" class="google-pay-button"></div>
+                                </div>
+                                <div class="google-pay-status">
+                                    <span id="google-pay-status">Not connected</span>
+                                    <div class="status-dot disconnected" id="google-pay-status-dot"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="workflow-container">
+                            <h4>Transaction Security Workflow</h4>
+                            <div class="workflow-description">
+                                <p>Visualize the secure transaction process with GPG approval</p>
+                            </div>
+                            <div class="workflow-canvas-container">
+                                <canvas id="workflow-canvas" width="600" height="300"></canvas>
+                            </div>
+                            <div class="button-group">
+                                <button id="animate-workflow-btn" class="secondary-btn">Animate Workflow</button>
+                                <button id="reset-workflow-btn" class="secondary-btn">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-panel hidden" id="admin-panel">
+                        <h4>Pool Contract Controls</h4>
+                        <div class="contract-info">
+                            <div class="info-item">
+                                <span class="label">Contract Address:</span>
+                                <span class="value" id="contract-address">0x1234567890abcdef1234567890abcdef12345678</span>
+                                <button class="copy-btn" data-copy="contract-address" title="Copy contract address"><i class="fas fa-copy" aria-hidden="true"></i></button>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Owner Address:</span>
+                                <span class="value" id="owner-address">0xabcdef1234567890abcdef1234567890abcdef12</span>
+                                <button class="copy-btn" data-copy="owner-address" title="Copy owner address"><i class="fas fa-copy" aria-hidden="true"></i></button>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Pool Balance:</span>
+                                <span class="value" id="pool-balance">0.00000000 BTC</span>
+                                <button id="refresh-pool-balance" class="icon-btn" title="Refresh pool balance"><i class="fas fa-sync-alt" aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                        
+                        <div class="admin-actions">
+                            <h4>Administrative Actions</h4>
+                            <div class="action-buttons">
+                                <button id="lock-pool-btn" class="action-btn">Lock Pool</button>
+                                <button id="unlock-pool-btn" class="action-btn">Unlock Pool</button>
+                                <button id="withdraw-fees-btn" class="action-btn">Withdraw Fees</button>
+                                <button id="update-fee-btn" class="action-btn">Update Fee Structure</button>
+                            </div>
+                        </div>
+                        
+                        <div class="pool-settings">
+                            <h4>Pool Settings</h4>
+                            <div class="settings-form">
+                                <div class="form-group">
+                                    <label for="fee-percentage">Fee Percentage</label>
+                                    <input type="number" id="fee-percentage" min="0" max="100" step="0.01" value="1.00">
+                                </div>
+                                <div class="form-group">
+                                    <label for="min-deposit">Minimum Deposit (BTC)</label>
+                                    <input type="number" id="min-deposit" min="0" step="0.00000001" value="0.001">
+                                </div>
+                                <div class="form-group">
+                                    <label for="max-users">Maximum Users</label>
+                                    <input type="number" id="max-users" min="1" step="1" value="100">
+                                </div>
+                                <button id="save-settings-btn" class="primary-btn">Save Settings</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-pane" id="tab-bhe-ticker">
+                <div class="exdex-home-container">
+                    <h3>EXDEX Home Launcher</h3>
+                    <div class="owner-info">
+                        <div class="info-item">
+                            <div class="label">Owner:</div>
+                            <div class="value" id="owner-address">-</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">Network:</div>
+                            <div class="value">EC-4 Private Network</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">Security:</div>
+                            <div class="value" id="security-status">Not Verified</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">Contracts:</div>
+                            <div class="value" id="contracts-status">Not Deployed</div>
+                        </div>
+                    </div>
+                    
+                    <div class="launch-status-container">
+                        <h4>Launch Status: <span id="launch-status">PENDING</span></h4>
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="launch-progress"></div>
+                            </div>
+                        </div>
+                        <div class="button-container">
+                            <button id="launch-token-btn" class="primary-btn">Launch Token</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="ticker-container">
+                    <h3>BHE Token Ticker</h3>
+                    
+                    <div class="ticker-header">
+                        <div class="ticker-symbol">
+                            <span class="symbol">BHE</span>
+                            <span class="name">Bitcoin Hardened Ethereum</span>
+                        </div>
+                        <div class="ticker-price">
+                            <span id="bhe-price">$0.00</span>
+                            <span id="bhe-price-change" class="price-change">0.00%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="ticker-stats">
+                        <div class="stat-item">
+                            <div class="stat-label">Market Cap</div>
+                            <div class="stat-value" id="bhe-market-cap">$0</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">24h Volume</div>
+                            <div class="stat-value" id="bhe-volume">$0</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Circulating Supply</div>
+                            <div class="stat-value" id="bhe-supply">0 BHE</div>
+                        </div>
+                    </div>
+                    
+                    <div class="ticker-chart-container">
+                        <canvas id="bhe-price-chart"></canvas>
+                    </div>
+                    
+                    <div class="deployment-preview">
+                        <h4>Deployment Status</h4>
+                        <div class="deployment-info">
+                            <div class="info-item">
+                                <div class="label">Current Stage:</div>
+                                <div class="value" id="bhe-stage">Pre-launch</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="label">Network:</div>
+                                <div class="value">EC-4 Private Network</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="label">Launch Countdown:</div>
+                                <div class="value" id="bhe-countdown">--:--:--:--</div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-container">
+                            <div class="progress-label">Deployment Progress</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="bhe-progress"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="deployment-actions">
+                            <button id="view-contract-btn" class="secondary-btn">View Contract</button>
+                            <button id="view-docs-btn" class="secondary-btn">Documentation</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-pane" id="tab-pool-admin">
+                <div class="admin-container">
+                    <h3>Pool Contract Administration</h3>
+                    <div class="connection-info">
+                        <div class="info-item">
+                            <div class="label">Connection Status:</div>
+                            <div class="value">Disconnected</div>
+                            <div class="status-indicator">
+                                <div class="status-dot disconnected"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="encryption-status">
+                        <h4>EC-4 Server Secure Connection</h4>
+                        <div class="info-item">
+                            <div class="label">Encryption Bot:</div>
+                            <div class="value" id="encryption-bot-status">Not initialized</div>
+                            <div class="status-indicator">
+                                <div class="status-dot disconnected" id="encryption-bot-status-dot"></div>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">Client ID:</div>
+                            <div class="value" id="encryption-client-id">-</div>
+                            <button class="copy-btn" data-copy="encryption-client-id" aria-label="Copy client ID to clipboard" title="Copy to clipboard"><i class="fas fa-copy" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="button-group">
+                            <button id="initialize-encryption-btn" class="primary-btn">Initialize Encryption Bot</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="status-bar">
+            <div id="status-message">Ready</div>
+            <div class="mempool-stats">
+                <span>Mempool: <span id="mempool-size">0</span> txs</span>
+                <span>Next Block Fee: <span id="next-block-fee">0</span> sat/vB</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="transaction-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Transaction Details</h3>
+            <div class="tx-modal-details">
+                <!-- Transaction details will be added here dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="js/bitcoin.js"></script>
+    <script src="js/walletconnect.js"></script>
+    <script src="js/googlepay.js"></script>
+    <script src="js/encryption-client.js"></script>
+    <script src="js/workflow-visualizer.js"></script>
+    <script src="js/bhe-ticker.js"></script>
+    <script src="js/exdex-home-launcher.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

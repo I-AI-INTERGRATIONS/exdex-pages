@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExDEX Trading Bots | Obsidian Gates Technology</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Roboto+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/advanced-visuals.css">
+    <link rel="stylesheet" href="css/trading-bot.css">
+    <script src="https://cdn.jsdelivr.net/npm/three@0.145.0/build/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <link rel="canonical" href="https://exdex.cc/trading-bot" />
+</head>
+<body>
+    <!-- Main Container -->
+    <div class="cosmos-background">
+        <div class="stars"></div>
+        <div class="twinkling"></div>
+        <div class="clouds"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="main-header">
+        <div class="logo-container">
+            <a href="index.html">
+                <img src="img/exdex-logo.svg" alt="ExDEX Logo" class="logo">
+                <div class="logo-text">EXDEX</div>
+            </a>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="index.html#trading">Trade</a></li>
+                <li><a href="index.html#liquidity">Liquidity</a></li>
+                <li><a href="investments.html">Invest</a></li>
+                <li><a href="trading-bot.html" class="active">Trading Bots</a></li>
+                <li><a href="index.html#aggro-vault">Aggro Vault</a></li>
+                <li><a href="index.html#driptide">DRIPTIDE</a></li>
+            </ul>
+        </nav>
+        <div class="connect-wallet">
+            <button class="neon-button">Connect Wallet</button>
+        </div>
+    </header>
+
+    <!-- AIRFORCE ONE OPSEC Badge -->
+    <div class="opsec-badge">
+        <div class="badge-inner">
+            <div class="badge-icon">🛡️</div>
+            <div class="badge-text">SECURED BY AIRFORCE ONE</div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="bot-hero-section">
+        <div class="hero-content">
+            <h1 class="cyber-glitch" data-text="OBSIDIAN GATES">OBSIDIAN GATES</h1>
+            <h2 class="bot-subtitle">ADVANCED TRADING BOT PLATFORM</h2>
+            <p class="hero-description">The fastest and safest autonomous trading system built on BHE bridging technology</p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-value">42,873</div>
+                    <div class="stat-label">Active Bots</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">$876M</div>
+                    <div class="stat-label">Daily Volume</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">0.0025s</div>
+                    <div class="stat-label">Execution Time</div>
+                </div>
+            </div>
+            <div class="hero-cta">
+                <button class="cta-button primary">Launch Bot Platform</button>
+                <button class="cta-button secondary">Learn Technology</button>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div id="obsidian-sphere-container" class="obsidian-sphere-container"></div>
+        </div>
+    </section>
+
+    <!-- Timeline Sphere Visualization -->
+    <section class="timeline-visualization-section">
+        <div class="section-header">
+            <h2 class="section-title">TIMELINE SPHERE TECHNOLOGY</h2>
+            <p class="section-subtitle">A revolutionary approach to blockchain trading visualization</p>
+        </div>
+
+        <div class="visualization-container">
+            <div class="obsidian-full-sphere" id="full-sphere-container"></div>
+            <div class="visualization-details">
+                <div class="vis-panel holographic">
+                    <h3 class="panel-title">OBSIDIAN TIME COMPRESSION</h3>
+                    <p class="panel-description">Each trading decision exists within its own compressed timeline, allowing the bot to analyze thousands of potential outcomes simultaneously.</p>
+                    <div class="panel-stats">
+                        <div class="panel-stat">
+                            <div class="stat-number">256K</div>
+                            <div class="stat-title">DECISION POINTS</div>
+                        </div>
+                        <div class="panel-stat">
+                            <div class="stat-number">0.2ms</div>
+                            <div class="stat-title">ANALYSIS TIME</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-nodes">
+                    <div class="timeline-node active">
+                        <div class="node-marker"></div>
+                        <div class="node-info">
+                            <h4 class="node-title">Quantum Entry Point</h4>
+                            <p class="node-detail">Initial trade position established at optimal price point</p>
+                        </div>
+                    </div>
+                    <div class="timeline-node">
+                        <div class="node-marker"></div>
+                        <div class="node-info">
+                            <h4 class="node-title">Bridge Execution</h4>
+                            <p class="node-detail">Cross-chain asset transfer through Level 4 Bridge</p>
+                        </div>
+                    </div>
+                    <div class="timeline-node">
+                        <div class="node-marker"></div>
+                        <div class="node-info">
+                            <h4 class="node-title">Arbitrage Detection</h4>
+                            <p class="node-detail">Multi-exchange price differential identified</p>
+                        </div>
+                    </div>
+                    <div class="timeline-node">
+                        <div class="node-marker"></div>
+                        <div class="node-info">
+                            <h4 class="node-title">Profit Realization</h4>
+                            <p class="node-detail">Trade closure and profit distribution to stakeholders</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bot Strategy Section -->
+    <section class="bot-strategy-section">
+        <div class="section-header">
+            <h2 class="section-title">TRADING STRATEGIES</h2>
+            <p class="section-subtitle">AI-powered strategies leveraging BHE's ecosystem</p>
+        </div>
+        
+        <div class="strategies-grid">
+            <div class="strategy-card holographic">
+                <div class="strategy-icon">
+                    <div class="icon-container">
+                        <div class="icon-ring"></div>
+                        <div class="icon-symbol">⚡</div>
+                    </div>
+                </div>
+                <h3 class="strategy-title">QUANTUM ARBITRAGE</h3>
+                <p class="strategy-description">Exploits microsecond price differences across exchanges, leveraging BHE's near-instant transaction speeds.</p>
+                <div class="strategy-metrics">
+                    <div class="metric">
+                        <div class="metric-value">0.5-2%</div>
+                        <div class="metric-label">Per Trade</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">High</div>
+                        <div class="metric-label">Frequency</div>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <div class="strategy-performance">92% Success Rate</div>
+            </div>
+            
+            <div class="strategy-card holographic">
+                <div class="strategy-icon">
+                    <div class="icon-container">
+                        <div class="icon-ring"></div>
+                        <div class="icon-symbol">🔄</div>
+                    </div>
+                </div>
+                <h3 class="strategy-title">BRIDGE LEVERAGE</h3>
+                <p class="strategy-description">Utilizes BHE's Level 4 Bridge to simultaneously trade assets on both Bitcoin and Ethereum networks.</p>
+                <div class="strategy-metrics">
+                    <div class="metric">
+                        <div class="metric-value">3-8%</div>
+                        <div class="metric-label">Per Trade</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">Medium</div>
+                        <div class="metric-label">Frequency</div>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <div class="strategy-performance">87% Success Rate</div>
+            </div>
+            
+            <div class="strategy-card holographic">
+                <div class="strategy-icon">
+                    <div class="icon-container">
+                        <div class="icon-ring"></div>
+                        <div class="icon-symbol">📊</div>
+                    </div>
+                </div>
+                <h3 class="strategy-title">DRIPTIDE INSIGHT</h3>
+                <p class="strategy-description">Leverages tokenized data insights to predict market movements before they occur.</p>
+                <div class="strategy-metrics">
+                    <div class="metric">
+                        <div class="metric-value">10-15%</div>
+                        <div class="metric-label">Per Trade</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">Low</div>
+                        <div class="metric-label">Frequency</div>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <div class="strategy-performance">78% Success Rate</div>
+            </div>
+            
+            <div class="strategy-card holographic">
+                <div class="strategy-icon">
+                    <div class="icon-container">
+                        <div class="icon-ring"></div>
+                        <div class="icon-symbol">🔒</div>
+                    </div>
+                </div>
+                <h3 class="strategy-title">AGGRO VAULT</h3>
+                <p class="strategy-description">High security strategy that utilizes the Aggro Vault's capital for large-scale institutional-grade trades.</p>
+                <div class="strategy-metrics">
+                    <div class="metric">
+                        <div class="metric-value">20-30%</div>
+                        <div class="metric-label">Per Trade</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">Very Low</div>
+                        <div class="metric-label">Frequency</div>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <div class="strategy-performance">74% Success Rate</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Performance Metrics -->
+    <section class="performance-section">
+        <div class="section-header">
+            <h2 class="section-title">PERFORMANCE METRICS</h2>
+            <p class="section-subtitle">Real-time analysis of trading bot performance</p>
+        </div>
+        
+        <div class="metrics-container">
+            <div class="metrics-visual">
+                <div id="performance-chart-container"></div>
+            </div>
+            
+            <div class="metrics-details">
+                <div class="metrics-card holographic">
+                    <div class="metric-header">
+                        <h3>ECOSYSTEM IMPACT</h3>
+                    </div>
+                    <div class="ecosystem-metrics">
+                        <div class="eco-metric">
+                            <div class="eco-title">BHE PRICE IMPACT</div>
+                            <div class="eco-value positive">+18.7%</div>
+                            <div class="eco-description">Direct price appreciation from bot activity</div>
+                        </div>
+                        <div class="eco-metric">
+                            <div class="eco-title">LIQUIDITY ENHANCEMENT</div>
+                            <div class="eco-value">$427M</div>
+                            <div class="eco-description">Added to ecosystem trading pools</div>
+                        </div>
+                        <div class="eco-metric">
+                            <div class="eco-title">COMMUNITY WEALTH</div>
+                            <div class="eco-value positive">+32.4%</div>
+                            <div class="eco-description">Increase in average holder portfolio</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="metrics-card holographic">
+                    <div class="metric-header">
+                        <h3>SUSTAINABLE ADVANTAGE</h3>
+                    </div>
+                    <p class="advantage-description">The Obsidian Gates platform creates a self-sustaining economic system that continually increases wealth for all participants.</p>
+                    <ul class="advantage-list">
+                        <li>Each trade contributes to ecosystem liquidity</li>
+                        <li>Profits are reinvested to improve the BHE infrastructure</li>
+                        <li>Trading activity inherently increases BHE token value</li>
+                        <li>Timeline compression technology ensures trades always execute at optimal moments</li>
+                        <li>Family-first wealth distribution model ensures profits reach individual holders</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Technology Explanation -->
+    <section class="timeline-tech-section dark-section">
+        <div class="section-header">
+            <h2 class="section-title">OBSIDIAN TIMELINE TECHNOLOGY</h2>
+            <p class="section-subtitle">Why our bots consistently outperform the market</p>
+        </div>
+        
+        <div class="tech-container">
+            <div class="tech-visual">
+                <div id="timeline-tech-container" class="timeline-sphere-detailed"></div>
+            </div>
+            
+            <div class="tech-explanation">
+                <div class="tech-point">
+                    <h3 class="point-title">3D TIMELINE COMPRESSION</h3>
+                    <p class="point-description">Unlike traditional trading algorithms that analyze linear market data, Obsidian Gates technology compresses blockchain timelines into a three-dimensional sphere. Each point on the sphere represents a potential trading outcome.</p>
+                </div>
+                
+                <div class="tech-point">
+                    <h3 class="point-title">QUANTUM SPOT ANALYSIS</h3>
+                    <p class="point-description">Every potential trade is mapped to a specific spot on the blockchain timeline. The AI simultaneously evaluates all spots to identify the optimal entry and exit points with mathematical precision.</p>
+                </div>
+                
+                <div class="tech-point">
+                    <h3 class="point-title">BRIDGE ACCELERATED EXECUTION</h3>
+                    <p class="point-description">Once the ideal trading opportunity is identified, BHE's Level 4 Bridge technology enables instant cross-chain execution, eliminating slippage and ensuring the predicted outcome materializes.</p>
+                </div>
+                
+                <div class="tech-point highlight-feature">
+                    <h3 class="point-title">DRIPTIDE-EXDE POOL SYSTEM</h3>
+                    <p class="point-description">Our newly implemented DRIPTIDE-ExDe Pool enables users to deposit funds into secure liquidity pools that are automatically deployed across optimal trading opportunities. The system ensures maximum returns while implementing military-grade OPSEC protocols.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ExDe Pool Implementation -->
+    <div class="pool-system-container" id="exde-pool">
+        <h2 class="section-title">DRIPTIDE-ExDe POOL SYSTEM</h2>
+        
+        <div class="pool-visualization">
+            <div id="pool-visualization-canvas"></div>
+        </div>
+        
+        <div class="pool-stats">
+            <div class="stat-card">
+                <h4>Total Pool Value</h4>
+                <p class="stat-value" id="pool-value">$12,457,892</p>
+                <p class="stat-change positive">+5.8% (24h)</p>
+            </div>
+            
+            <div class="stat-card">
+                <h4>Active Trading Pairs</h4>
+                <p class="stat-value" id="trading-pairs">24</p>
+                <p class="stat-change neutral">+2 (24h)</p>
+            </div>
+            
+            <div class="stat-card">
+                <h4>APY Range</h4>
+                <p class="stat-value" id="apy-range">12.4% - 28.7%</p>
+                <p class="stat-change positive">+2.1% (24h)</p>
+            </div>
+            
+            <div class="stat-card">
+                <h4>Security Rating</h4>
+                <p class="stat-value" id="security-rating">A+ (AIRFORCE ONE)</p>
+                <p class="stat-change positive">Verified</p>
+            </div>
+        </div>
+        
+        <div class="pool-actions">
+            <h3>Participate in ExDe Pool</h3>
+            
+            <div class="tabs-container">
+                <div class="tabs">
+                    <div class="tab active" data-tab="deposit">Deposit</div>
+                    <div class="tab" data-tab="withdraw">Withdraw</div>
+                    <div class="tab" data-tab="stats">My Stats</div>
+                </div>
+                
+                <div class="tab-content active" id="deposit">
+                    <div class="form-group">
+                        <label>Asset to Deposit</label>
+                        <select id="deposit-asset" title="Select the asset to deposit">
+                            <option value="eth">Ethereum (ETH)</option>
+                            <option value="wbtc">Wrapped Bitcoin (wBTC)</option>
+                            <option value="bhe">BHE Token</option>
+                            <option value="usdc">USDC</option>
+                            <option value="usdt">USDT</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Amount</label>
+                        <input type="text" id="deposit-amount" placeholder="0.00">
+                        <div class="balance-display">Balance: <span id="user-balance">--</span></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Strategy</label>
+                        <select id="deposit-strategy" title="Select the strategy for your deposit">
+                            <option value="conservative">Conservative (8-12% APY)</option>
+                            <option value="balanced" selected>Balanced (12-20% APY)</option>
+                            <option value="aggressive">Aggressive (20-30% APY)</option>
+                            <option value="quantum">Quantum (25-40% APY)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="security-options">
+                        <h4>OPSEC Protection</h4>
+                        <div class="security-option">
+                            <input type="checkbox" id="riptide-protocol" checked>
+                            <label for="riptide-protocol">RIPTIDE Protocol</label>
+                        </div>
+                        <div class="security-option">
+                            <input type="checkbox" id="driptide-exde" checked>
+                            <label for="driptide-exde">DRIPTIDE-ExDe Encryption</label>
+                        </div>
+                        <div class="security-option">
+                            <input type="checkbox" id="sentinel-security">
+                            <label for="sentinel-security">Sentinel AI Security</label>
+                        </div>
+                    </div>
+                    
+                    <button class="action-button deposit-button">Connect Wallet to Deposit</button>
+                </div>
+                
+                <div class="tab-content" id="withdraw">
+                    <div class="form-group">
+                        <label>Pool Position</label>
+                        <select id="withdraw-position" title="Select the pool position to withdraw">
+                            <option value="eth-balanced">ETH - Balanced Strategy</option>
+                            <option value="wbtc-conservative">wBTC - Conservative Strategy</option>
+                            <option value="bhe-aggressive">BHE - Aggressive Strategy</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Amount</label>
+                        <input type="text" id="withdraw-amount" placeholder="0.00">
+                        <div class="balance-display">Available: <span id="position-balance">--</span></div>
+                    </div>
+                    
+                    <div class="withdrawal-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Current Value:</span>
+                            <span class="stat-value" id="position-value">$0.00</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Total Profit:</span>
+                            <span class="stat-value positive" id="position-profit">$0.00</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Time in Pool:</span>
+                            <span class="stat-value" id="position-time">0 days</span>
+                        </div>
+                    </div>
+                    
+                    <button class="action-button withdraw-button">Connect Wallet to Withdraw</button>
+                </div>
+                
+                <div class="tab-content" id="stats">
+                    <div class="user-stats-container">
+                        <div class="no-wallet-message">
+                            <p>Connect your wallet to view your personal pool statistics</p>
+                            <button class="action-button connect-button">Connect Wallet</button>
+                        </div>
+                        
+                        <div class="user-stats-content">
+                            <div class="stats-overview">
+                                <div class="stat-item large">
+                                    <span class="stat-label">Total Value Locked</span>
+                                    <span class="stat-value" id="user-tvl">$0.00</span>
+                                </div>
+                                <div class="stat-item large">
+                                    <span class="stat-label">Total Earnings</span>
+                                    <span class="stat-value positive" id="user-earnings">$0.00</span>
+                                </div>
+                            </div>
+                            
+                            <h4>Active Positions</h4>
+                            <div class="positions-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Asset</th>
+                                            <th>Strategy</th>
+                                            <th>Amount</th>
+                                            <th>Value</th>
+                                            <th>Profit</th>
+                                            <th>APY</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="positions-table-body">
+                                        <!-- This will be populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="pool-security">
+            <div class="security-badge">
+                <img src="img/airforce-one-badge.png" alt="AIRFORCE ONE OPSEC Badge">
+                <span>AIRFORCE ONE<br>OPSEC PROTECTED</span>
+            </div>
+            <div class="security-info">
+                <h4>Military-Grade Security</h4>
+                <p>The DRIPTIDE-ExDe Pool is protected by the same security protocols used by AIRFORCE ONE. All funds are secured using multi-signature authorization, zero-knowledge proofs, and quantum-resistant encryption.</p>
+                <p>Every transaction undergoes rigorous pre-audit verification before execution, ensuring maximum protection against unauthorized access.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Market Making Section with Hummingbot API -->
+    <section class="market-making-section">
+        <div class="section-header">
+            <h2 class="section-title">PROFESSIONAL MARKET MAKING</h2>
+            <p class="section-subtitle">Powered by Hummingbot API integration</p>
+        </div>
+        
+        <div class="market-making-container">
+            <div class="market-making-visual">
+                <div class="hummingbot-dashboard">
+                    <div class="dashboard-header">
+                        <div class="dashboard-logo">
+                            <img src="img/hummingbot-logo.svg" alt="Hummingbot" width="24" height="24">
+                            <div class="dashboard-logo-text">HUMMINGBOT API</div>
+                        </div>
+                        <div class="dashboard-controls">
+                            <div class="dashboard-status active">Connected</div>
+                        </div>
+                    </div>
+                    <div class="dashboard-content">
+                        <div class="market-pair">
+                            <div class="pair-name">BHE/USDT</div>
+                            <div class="pair-stats">
+                                <div class="stat bid">Bid: $4,275.82</div>
+                                <div class="stat ask">Ask: $4,278.54</div>
+                                <div class="stat spread">Spread: 0.06%</div>
+                            </div>
+                        </div>
+                        <div class="market-pair">
+                            <div class="pair-name">BHE/BTC</div>
+                            <div class="pair-stats">
+                                <div class="stat bid">Bid: 0.04765 BTC</div>
+                                <div class="stat ask">Ask: 0.04782 BTC</div>
+                                <div class="stat spread">Spread: 0.36%</div>
+                            </div>
+                        </div>
+                        <div class="market-pair">
+                            <div class="pair-name">NOS/BHE</div>
+                            <div class="pair-stats">
+                                <div class="stat bid">Bid: 0.00986 BHE</div>
+                                <div class="stat ask">Ask: 0.00992 BHE</div>
+                                <div class="stat spread">Spread: 0.61%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="hummingbot-integration">
+                    <div class="integration-header">
+                        <div class="integration-logo">
+                            <img src="img/hummingbot-logo.svg" alt="Hummingbot" width="40" height="40">
+                        </div>
+                        <div class="integration-title">HUMMINGBOT API INTEGRATION</div>
+                    </div>
+                    
+                    <div class="api-features">
+                        <div class="api-feature">
+                            <div class="api-feature-title">Pure Market Making</div>
+                            <div class="api-feature-description">Create and maintain bid/ask orders at target spreads to provide market liquidity and capture spreads.</div>
+                        </div>
+                        <div class="api-feature">
+                            <div class="api-feature-title">Cross-Exchange Market Making</div>
+                            <div class="api-feature-description">Leverage rate disparities between different exchanges to maximize profits and ensure optimal pricing.</div>
+                        </div>
+                        <div class="api-feature">
+                            <div class="api-feature-title">Obsidian Risk Management</div>
+                            <div class="api-feature-description">Advanced risk calculations using our proprietary Obsidian Timeline technology to minimize losses.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="code-sample">
+                        <div class="code-title">Hummingbot API Integration</div>
+                        <code>
+<span class="comment"># BHE Trading Bot with Hummingbot API Integration</span>
+<span class="keyword">from</span> hummingbot.client <span class="keyword">import</span> HummingbotClient
+<span class="keyword">from</span> obsidian_gates <span class="keyword">import</span> TimelineSphere
+
+<span class="comment"># Initialize the Obsidian Gates timeline prediction</span>
+timeline = TimelineSphere(security_level=<span class="string">"AIRFORCE_ONE"</span>)
+
+<span class="comment"># Configure the Hummingbot client with optimal settings</span>
+client = HummingbotClient(
+    exchange=<span class="string">"binance"</span>,
+    market=<span class="string">"BHE-USDT"</span>,
+    bid_spread=<span class="number">0.15</span>,
+    ask_spread=<span class="number">0.15</span>,
+    min_order_size=<span class="number">0.01</span>,
+    order_refresh_time=<span class="number">30.0</span>,
+    max_order_age=<span class="number">1800.0</span>,
+    order_levels=<span class="number">3</span>,
+    order_level_spread=<span class="number">0.5</span>,
+    order_level_amount=<span class="number">0.5</span>,
+    filled_order_delay=<span class="number">60.0</span>,
+    hanging_orders_enabled=<span class="keyword">True</span>,
+    hanging_orders_cancel_pct=<span class="number">10.0</span>
+)
+
+<span class="comment"># Apply Obsidian Gates predictive optimization</span>
+optimal_points = timeline.predict_optimal_trading_points(
+    market=<span class="string">"BHE-USDT"</span>, 
+    timeframe=<span class="string">"4h"</span>,
+    confidence_threshold=<span class="number">0.85</span>
+)
+
+<span class="comment"># Start the market making strategy with Obsidian optimization</span>
+client.start(
+    strategy=<span class="string">"pure_market_making"</span>,
+    script_options={
+        <span class="property">"pricing_delegate"</span>: obsidian_gates.PricingDelegate(optimal_points),
+        <span class="property">"inventory_skew_enabled"</span>: <span class="keyword">True</span>,
+        <span class="property">"inventory_target_base_pct"</span>: <span class="number">50.0</span>,
+        <span class="property">"inventory_range_multiplier"</span>: <span class="number">2.0</span>,
+        <span class="property">"volatility_adjustment_enabled"</span>: <span class="keyword">True</span>
+    }
+)
+                        </code>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="market-making-details">
+                <div class="mm-feature-list">
+                    <div class="mm-feature">
+                        <div class="mm-feature-icon">⚡</div>
+                        <div class="mm-feature-title">1MS Execution Speed</div>
+                        <div class="mm-feature-description">Our enhanced Hummingbot integration executes trades in 1 millisecond, 25x faster than standard implementations, allowing our bots to capture fleeting market opportunities.</div>
+                    </div>
+                    
+                    <div class="mm-feature">
+                        <div class="mm-feature-icon">🌉</div>
+                        <div class="mm-feature-title">Cross-Chain Market Making</div>
+                        <div class="mm-feature-description">Uniquely leverages the BHE Level 4 Bridge to provide liquidity and execute arbitrage across Bitcoin and Ethereum networks simultaneously.</div>
+                    </div>
+                    
+                    <div class="mm-feature">
+                        <div class="mm-feature-icon">🛡️</div>
+                        <div class="mm-feature-title">AIRFORCE ONE Security</div>
+                        <div class="mm-feature-description">Military-grade security protocols protect your API keys and trading strategies, with dual-PGP encryption and zero-knowledge authentication.</div>
+                    </div>
+                    
+                    <div class="mm-feature">
+                        <div class="mm-feature-icon">🧠</div>
+                        <div class="mm-feature-title">Obsidian Timeline Integration</div>
+                        <div class="mm-feature-description">Our proprietary Obsidian Timeline technology enhances standard Hummingbot strategies with predictive price movement analysis.</div>
+                    </div>
+                </div>
+                
+                <div class="holographic">
+                    <div class="panel-title">MARKET MAKING PERFORMANCE</div>
+                    <div class="panel-stats">
+                        <div class="panel-stat">
+                            <div class="stat-number">$87.4M</div>
+                            <div class="stat-title">DAILY VOLUME</div>
+                        </div>
+                        <div class="panel-stat">
+                            <div class="stat-number">+46.2%</div>
+                            <div class="stat-title">APY</div>
+                        </div>
+                        <div class="panel-stat">
+                            <div class="stat-number">0.02%</div>
+                            <div class="stat-title">AVG SPREAD</div>
+                        </div>
+                    </div>
+                    <p class="panel-description">Our market making bots create a perfect ecosystem of liquidity, ensuring families can easily enter and exit positions with minimal slippage. The value generated flows back to holders through the Aggro Vault system.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Getting Started Section -->
+    <section class="getting-started-section">
+        <div class="section-header">
+            <h2 class="section-title">GET STARTED TODAY</h2>
+            <p class="section-subtitle">Join thousands of families reclaiming their financial freedom</p>
+        </div>
+        
+        <div class="steps-container">
+            <div class="step-card">
+                <div class="step-number">01</div>
+                <h3 class="step-title">CHOOSE YOUR BOT</h3>
+                <p class="step-description">Select from our range of pre-configured trading bots or create your own custom strategy.</p>
+                <div class="step-image-container">
+                    <img src="img/bot-selection.svg" alt="Bot Selection" class="step-image">
+                </div>
+            </div>
+            
+            <div class="step-card">
+                <div class="step-number">02</div>
+                <h3 class="step-title">FUND YOUR ACCOUNT</h3>
+                <p class="step-description">Deposit BHE, BTC, ETH or other supported assets to power your trading bot.</p>
+                <div class="step-image-container">
+                    <img src="img/fund-account.svg" alt="Fund Account" class="step-image">
+                </div>
+            </div>
+            
+            <div class="step-card">
+                <div class="step-number">03</div>
+                <h3 class="step-title">SET PARAMETERS</h3>
+                <p class="step-description">Define risk levels, profit targets, and trading frequency for your automated strategy.</p>
+                <div class="step-image-container">
+                    <img src="img/parameters.svg" alt="Set Parameters" class="step-image">
+                </div>
+            </div>
+            
+            <div class="step-card">
+                <div class="step-number">04</div>
+                <h3 class="step-title">LAUNCH & MONITOR</h3>
+                <p class="step-description">Activate your trading bot and monitor its performance through our advanced dashboard.</p>
+                <div class="step-image-container">
+                    <img src="img/monitor.svg" alt="Launch and Monitor" class="step-image">
+                </div>
+            </div>
+        </div>
+        
+        <div class="cta-container">
+            <button class="launch-button">
+                <span class="button-text">LAUNCH BOT PLATFORM</span>
+                <span class="button-icon">→</span>
+            </button>
+            <p class="cta-subtext">Return wealth to your family with autonomous trading technology</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-grid">
+            <div class="footer-column">
+                <h3>ExDEX Platform</h3>
+                <ul>
+                    <li><a href="index.html#trading">Trading</a></li>
+                    <li><a href="index.html#liquidity">Liquidity Pools</a></li>
+                    <li><a href="investments.html">Investment</a></li>
+                    <li><a href="trading-bot.html">Trading Bots</a></li>
+                    <li><a href="index.html#aggro-vault">Aggro Vault</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">API</a></li>
+                    <li><a href="#">Smart Contracts</a></li>
+                    <li><a href="#">Security Audits</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Community</h3>
+                <ul>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">Discord</a></li>
+                    <li><a href="#">Telegram</a></li>
+                    <li><a href="#">GitHub</a></li>
+                    <li><a href="#">Medium</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Newsletter</h3>
+                <p>Get the latest updates and announcements</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Enter your email">
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="copyright"> 2025 ExDEX - Bitcoin Hardened Ethereum. All rights reserved.</div>
+            <div class="footer-links">
+                <a href="#">Terms</a>
+                <a href="#">Privacy</a>
+                <a href="#">Cookies</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.0.0/d3.min.js"></script>
+    <script src="js/trading-bot.js"></script>
+    <script src="js/exde-pool.js"></script>
+</body>
+</html>

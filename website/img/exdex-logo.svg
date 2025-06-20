@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logo-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f6ff" />
+      <stop offset="100%" stop-color="#fd4dff" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  
+  <!-- Hexagon Background -->
+  <path d="M100,10 L177,50 L177,150 L100,190 L23,150 L23,50 Z" fill="#12151e" stroke="url(#logo-gradient)" stroke-width="3" filter="url(#glow)" />
+  
+  <!-- ExDEX Text -->
+  <text x="100" y="110" font-family="Orbitron, sans-serif" font-size="28" font-weight="700" text-anchor="middle" fill="url(#logo-gradient)">ExDEX</text>
+  
+  <!-- BHE Subtext -->
+  <text x="100" y="135" font-family="Orbitron, sans-serif" font-size="12" font-weight="400" text-anchor="middle" fill="#ffffff">BITCOIN HARDENED</text>
+  
+  <!-- Ethereum Icon -->
+  <g transform="translate(85, 60) scale(0.06)">
+    <polygon fill="#00f6ff" points="250,0 500,400 250,550 0,400" />
+    <polygon fill="#fd4dff" points="250,0 500,275 250,400 0,275" />
+  </g>
+  
+  <!-- Bitcoin Symbol -->
+  <g transform="translate(105, 60) scale(0.06)">
+    <circle fill="#12151e" stroke="#fd4dff" stroke-width="40" cx="250" cy="250" r="200" />
+    <path d="M320,170 L290,170 L290,130 L260,130 L260,170 L220,170 L220,130 L190,130 L190,170 L160,170 L160,200 L190,200 L190,300 L160,300 L160,330 L190,330 L190,370 L220,370 L220,330 L260,330 L260,370 L290,370 L290,330 L320,330 C350,330 380,310 380,280 C380,250 360,240 350,230 C360,220 370,210 370,180 C370,150 350,130 320,130 L290,130 L290,170 Z M310,190 C330,190 340,210 320,230 L220,230 L220,190 Z M330,290 L220,290 L220,250 L320,250 C340,250 350,270 330,290 Z" fill="#00f6ff" />
+  </g>
+</svg>

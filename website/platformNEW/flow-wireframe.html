@@ -1,0 +1,88 @@
+<!-- Wireframe Flow: ExDeX Privacy Coin System -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ExDeX System Flow Wireframe</title>
+  <style>
+    body { background: #f7f7f7; color: #232323; font-family: Arial, sans-serif; }
+    .diagram-container { display: flex; flex-direction: column; align-items: center; margin-top: 2em; }
+    .legend { background: #fff; border: 1px solid #bbb; border-radius: 8px; max-width: 600px; margin: 2em auto; padding: 1em 2em; }
+    .legend h3 { margin-top: 0; }
+    .redacted { background: repeating-linear-gradient(-45deg, #ccc, #ccc 10px, #fff 10px, #fff 20px); color: #888; font-weight: bold; padding: 0.2em 0.5em; border-radius: 4px; }
+    .step-label { font-weight: bold; font-size: 1.1em; }
+  </style>
+</head>
+<body>
+  <header><h1>ExDeX Privacy Coin Flow (Wireframe)</h1></header>
+  <div class="diagram-container">
+    <svg width="820" height="500" style="border:1px solid #bbb; background:#fff;">
+      <!-- Actors/Levels -->
+      <!-- Customer/User -->
+      <rect x="20" y="60" width="120" height="50" fill="#e0e0e0" stroke="#2d82b7" stroke-width="3"/>
+      <text x="80" y="90" text-anchor="middle" font-size="15">Customer</text>
+      <!-- Knox Wallet -->
+      <rect x="180" y="60" width="120" height="50" fill="#e0e0e0" stroke="#6c3483" stroke-width="3"/>
+      <text x="240" y="90" text-anchor="middle" font-size="15">Knox Wallet</text>
+      <!-- Bank Buddy -->
+      <rect x="340" y="60" width="120" height="50" fill="#e0e0e0" stroke="#27ae60" stroke-width="3"/>
+      <text x="400" y="90" text-anchor="middle" font-size="15">Bank Buddy</text>
+      <!-- Card Service -->
+      <rect x="500" y="60" width="120" height="50" fill="#e0e0e0" stroke="#e67e22" stroke-width="3"/>
+      <text x="560" y="90" text-anchor="middle" font-size="15">Card Service</text>
+      <!-- Bridge/DEX -->
+      <rect x="660" y="60" width="120" height="50" fill="#e0e0e0" stroke="#c0392b" stroke-width="3"/>
+      <text x="720" y="90" text-anchor="middle" font-size="15">Bridge/DEX</text>
+      <!-- Pools -->
+      <rect x="180" y="200" width="120" height="50" fill="#e0e0e0" stroke="#2980b9" stroke-width="3"/>
+      <text x="240" y="230" text-anchor="middle" font-size="15">Pools</text>
+      <!-- Blockchain -->
+      <rect x="340" y="200" width="120" height="50" fill="#e0e0e0" stroke="#616161" stroke-width="3"/>
+      <text x="400" y="230" text-anchor="middle" font-size="15">Blockchain</text>
+      <!-- OPSEC/ProxGuard -->
+      <rect x="500" y="200" width="120" height="50" fill="#e0e0e0" stroke="#16a085" stroke-width="3"/>
+      <text x="560" y="230" text-anchor="middle" font-size="15">ProxGuard</text>
+      <!-- Arrows & Steps -->
+      <!-- 1. Buy Coin -->
+      <line x1="140" y1="85" x2="180" y2="85" stroke="#2d82b7" stroke-width="3" marker-end="url(#arrow)"/>
+      <text x="160" y="75" font-size="13" fill="#2d82b7">1. Buy Coin</text>
+      <!-- 2. Sell Coin -->
+      <line x1="660" y1="85" x2="620" y2="85" stroke="#c0392b" stroke-width="3" marker-end="url(#arrow)"/>
+      <text x="640" y="75" font-size="13" fill="#c0392b">2. Sell Coin</text>
+      <!-- 3. Bridge -->
+      <line x1="620" y1="85" x2="500" y2="85" stroke="#e67e22" stroke-width="3" marker-end="url(#arrow)"/>
+      <text x="560" y="55" font-size="13" fill="#e67e22">3. Bridge</text>
+      <!-- 4. Pools/Blockchain -->
+      <line x1="240" y1="110" x2="240" y2="200" stroke="#2980b9" stroke-width="3" marker-end="url(#arrow)"/>
+      <text x="250" y="160" font-size="13" fill="#2980b9">4. Pool Stake</text>
+      <line x1="400" y1="110" x2="400" y2="200" stroke="#616161" stroke-width="3" marker-end="url(#arrow)"/>
+      <text x="410" y="160" font-size="13" fill="#616161">5. Chain Tx</text>
+      <!-- Privacy/Anonymity (REDACTED) -->
+      <rect x="340" y="270" width="120" height="30" class="redacted"/>
+      <text x="400" y="290" text-anchor="middle" font-size="13" fill="#888">REDACTED (Privacy Layer)</text>
+      <!-- OPSEC/ProxGuard Link -->
+      <line x1="560" y1="250" x2="560" y2="200" stroke="#16a085" stroke-width="2" marker-end="url(#arrow)"/>
+      <text x="570" y="245" font-size="12" fill="#16a085">OPSEC</text>
+      <!-- Arrow marker definition -->
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L8,4 L0,8 Z" fill="#232323" />
+        </marker>
+      </defs>
+    </svg>
+  </div>
+  <div class="legend">
+    <h3>Flow Legend</h3>
+    <ol>
+      <li><span class="step-label" style="color:#2d82b7">Buy Coin:</span> Customer purchases BHE coin via Knox Wallet, routed through Bank Buddy for compliance.</li>
+      <li><span class="step-label" style="color:#c0392b">Sell Coin:</span> Customer sells BHE coin, routed through Bridge/DEX to external market (privacy preserved).</li>
+      <li><span class="step-label" style="color:#e67e22">Bridge:</span> Funds are bridged across chains or pools, with anonymization steps.</li>
+      <li><span class="step-label" style="color:#2980b9">Pool Stake:</span> User stakes coins in pools for rewards/yield.</li>
+      <li><span class="step-label" style="color:#616161">Chain Tx:</span> All transactions are written to the blockchain (with privacy layer applied).</li>
+      <li><span class="step-label" style="color:#16a085">OPSEC:</span> ProxGuard and other privacy tools ensure session anonymity and security.</li>
+      <li><span class="redacted">REDACTED:</span> Internal privacy logic, KYC, or bridge details hidden for security.</li>
+    </ol>
+  </div>
+</body>
+</html>

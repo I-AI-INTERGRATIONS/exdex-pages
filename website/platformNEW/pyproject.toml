@@ -1,0 +1,18 @@
+[build-system]
+requires = ["uv"]
+build-backend = "uv.build"
+
+[tool.uv]
+format = "uv build format"
+test = "uv run test"
+
+[tool.uv.build]
+format = "uv build format"
+test = "uv run test"
+
+[tool.uv.scripts]
+start = "python src/frontend/airdrop.py"
+test = "python -m pytest tests/"
+dev = "uv run start"
+build = "python setup.py build"
+deploy = "uv run build && uv run deploy:prod"

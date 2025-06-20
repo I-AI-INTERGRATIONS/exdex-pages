@@ -1,0 +1,28 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../js"
+		},
+		{
+			"path": "../img"
+		},
+		{
+			"path": "../iliquid"
+		},
+		{
+			"path": "../downloads"
+		},
+		{
+			"path": "../css"
+		},
+		{
+			"path": "../cc"
+		},
+		{
+			"path": "../backend"
+		}
+	]
+}

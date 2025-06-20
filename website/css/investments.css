@@ -1,0 +1,846 @@
+/* Investment Dashboard Styles */
+:root {
+    --investment-bg: rgba(8, 11, 18, 0.9);
+    --card-bg: rgba(17, 22, 35, 0.8);
+    --card-border: rgba(66, 134, 244, 0.3);
+    --highlight-color: #fd4dff;
+    --discount-bg: linear-gradient(135deg, #ff3d00, #ff0077);
+    --pool-featured-bg: linear-gradient(135deg, rgba(0, 246, 255, 0.15), rgba(253, 77, 255, 0.15));
+    --chart-green: #0ecb81;
+    --chart-red: #f6465d;
+}
+
+/* Dashboard Layout */
+.dashboard-section {
+    padding: 2rem;
+    margin-top: 60px;
+}
+
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.dashboard-header h1 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.subheader {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    font-size: 1.2rem;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr 320px;
+    gap: 1.5rem;
+    height: calc(100vh - 300px);
+    min-height: 700px;
+}
+
+/* Panel Styling */
+.token-list-panel,
+.chart-panel,
+.investment-panel {
+    background: var(--card-bg);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--card-border);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.panel-header h3 {
+    font-size: 1.2rem;
+    color: var(--text-bright);
+    margin: 0;
+}
+
+/* Token List Panel */
+.search-container {
+    display: flex;
+    align-items: center;
+}
+
+.search-container input {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 0.5rem;
+    color: var(--text-primary);
+    width: 120px;
+}
+
+.search-button {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    margin-left: 0.5rem;
+}
+
+.token-list {
+    overflow-y: auto;
+    flex-grow: 1;
+    padding: 0.5rem;
+}
+
+.token-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.token-item:hover {
+    background: rgba(66, 134, 244, 0.15);
+}
+
+.token-item.featured {
+    background: rgba(66, 134, 244, 0.1);
+    border: 1px solid rgba(66, 134, 244, 0.3);
+}
+
+.token-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 0.75rem;
+    object-fit: contain;
+}
+
+.token-info {
+    flex-grow: 1;
+}
+
+.token-name {
+    font-weight: 600;
+    color: var(--text-bright);
+}
+
+.token-price {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.token-change {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.token-change.positive {
+    color: var(--chart-green);
+}
+
+.token-change.negative {
+    color: var(--chart-red);
+}
+
+/* Chart Panel */
+.token-selection {
+    display: flex;
+    align-items: center;
+}
+
+.selected-token-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 0.5rem;
+}
+
+.selected-token-name {
+    font-weight: 600;
+    color: var(--text-bright);
+    margin-right: 1rem;
+}
+
+.selected-token-price {
+    color: var(--text-secondary);
+    margin-right: 0.5rem;
+}
+
+.chart-controls {
+    display: flex;
+}
+
+.chart-button {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    padding: 0.25rem 0.75rem;
+    margin-left: 0.25rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.chart-button:hover {
+    background: rgba(66, 134, 244, 0.15);
+}
+
+.chart-button.active {
+    background: rgba(0, 246, 255, 0.2);
+    border-color: rgba(0, 246, 255, 0.4);
+    color: var(--text-bright);
+}
+
+#trading-chart-container {
+    flex-grow: 1;
+    width: 100%;
+    min-height: 300px;
+    padding: 1rem;
+    position: relative;
+}
+
+.chart-indicators {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.indicator {
+    text-align: center;
+}
+
+.indicator-name {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.25rem;
+}
+
+.indicator-value {
+    font-weight: 600;
+    color: var(--text-bright);
+}
+
+.indicator-value.positive {
+    color: var(--chart-green);
+}
+
+.indicator-value.negative {
+    color: var(--chart-red);
+}
+
+/* Investment Panel */
+.filter-container {
+    display: flex;
+}
+
+.filter-button {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    padding: 0.25rem 0.75rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.filter-button:hover {
+    color: var(--text-bright);
+}
+
+.filter-button.active {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.discount-banner {
+    margin: 1rem;
+    background: var(--discount-bg);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    position: relative;
+}
+
+.discount-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+    z-index: 1;
+}
+
+.discount-content {
+    padding: 1rem;
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+.discount-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 0.25rem;
+}
+
+.discount-percentage {
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    margin-bottom: 0.25rem;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.discount-description {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 0.5rem;
+}
+
+.discount-timer {
+    font-family: 'Roboto Mono', monospace;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    display: inline-block;
+    color: white;
+    font-size: 0.85rem;
+}
+
+.pools-list {
+    overflow-y: auto;
+    flex-grow: 1;
+    padding: 0 1rem 1rem;
+}
+
+.pool-item {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.pool-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.pool-item.featured-pool {
+    background: var(--pool-featured-bg);
+    border: 1px solid rgba(0, 246, 255, 0.3);
+}
+
+.pool-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.pool-name {
+    font-weight: 600;
+    color: var(--text-bright);
+}
+
+.pool-badge {
+    background: rgba(66, 134, 244, 0.2);
+    color: var(--primary);
+    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.hot-badge {
+    background: rgba(255, 59, 48, 0.2);
+    color: #ff3b30;
+}
+
+.pool-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+
+.pool-apy {
+    color: var(--chart-green);
+    font-weight: 600;
+}
+
+.pool-tvl {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.pool-reserves {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: var(--border-radius);
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.reserve-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.reserve-item:last-child {
+    margin-bottom: 0;
+}
+
+.reserve-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 0.5rem;
+}
+
+.reserve-value {
+    color: var(--text-secondary);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.9rem;
+}
+
+.investment-button {
+    width: 100%;
+    background: rgba(66, 134, 244, 0.2);
+    border: 1px solid rgba(66, 134, 244, 0.4);
+    color: var(--primary);
+    padding: 0.75rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.investment-button:hover {
+    background: rgba(66, 134, 244, 0.3);
+}
+
+.featured-button {
+    background: rgba(0, 246, 255, 0.2);
+    border: 1px solid rgba(0, 246, 255, 0.4);
+    color: var(--secondary);
+}
+
+.featured-button:hover {
+    background: rgba(0, 246, 255, 0.3);
+}
+
+/* Vault Reserves Section */
+.vault-reserves-section {
+    padding: 3rem 2rem;
+    background: rgba(8, 11, 18, 0.95);
+    position: relative;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.neon-text {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--text-bright);
+    font-size: 2.5rem;
+    text-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary);
+    margin-bottom: 0.5rem;
+}
+
+.section-header p {
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.reserves-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+}
+
+.reserves-visualization {
+    flex: 1;
+    min-width: 300px;
+    max-width: 600px;
+    height: 400px;
+    position: relative;
+}
+
+.vault-3d {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.reserves-flow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+}
+
+.reserves-flow path {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+}
+
+.reserves-details {
+    flex: 1;
+    min-width: 300px;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.reserve-card {
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+}
+
+.reserve-card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.reserve-icon {
+    width: 32px;
+    height: 32px;
+    margin-right: 1rem;
+}
+
+.reserve-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-bright);
+}
+
+.reserve-amount {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 0.5rem;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.reserve-value {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.reserve-progress {
+    margin-bottom: 1.5rem;
+}
+
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.progress-bar {
+    height: 8px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    border-radius: 4px;
+    transition: width 1s ease;
+}
+
+.reserve-status {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.status-badge {
+    background: rgba(255, 59, 48, 0.2);
+    color: #ff3b30;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.status-info {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Investment Strategies Section */
+.strategies-section {
+    padding: 4rem 2rem;
+    background: rgba(12, 15, 23, 0.98);
+}
+
+.strategies-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.strategy-card {
+    flex: 1;
+    min-width: 300px;
+    max-width: 350px;
+    height: 450px;
+}
+
+.card-3d {
+    perspective: 1000px;
+}
+
+.card-3d-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+.card-3d-front, .card-3d-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: var(--border-radius-lg);
+    padding: 1.5rem;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    display: flex;
+    flex-direction: column;
+}
+
+.strategy-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.strategy-header h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-bright);
+}
+
+.ai-badge {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: var(--bg-dark);
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.strategy-metrics {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.metric {
+    text-align: center;
+    flex: 1;
+}
+
+.metric-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 0.25rem;
+}
+
+.metric-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.strategy-description {
+    flex-grow: 1;
+    margin-bottom: 1.5rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.strategy-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.stat-item {
+    flex: 1;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.25rem;
+}
+
+.stat-value {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-bright);
+}
+
+.stat-value.positive {
+    color: var(--chart-green);
+}
+
+.quantum-button {
+    background: linear-gradient(45deg, var(--primary), transparent) border-box;
+    border: 2px solid transparent;
+    border-radius: var(--border-radius);
+    position: relative;
+    padding: 0.75rem;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.quantum-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, var(--primary-dark), var(--primary));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+}
+
+.quantum-button:hover::before {
+    opacity: 1;
+}
+
+.button-text {
+    position: relative;
+    z-index: 2;
+    color: var(--text-bright);
+    font-weight: 600;
+}
+
+/* Glitch Effect */
+.glitch {
+    position: relative;
+    font-weight: 900;
+    line-height: 1.2;
+    color: var(--text-bright);
+}
+
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.glitch::before {
+    left: 2px;
+    text-shadow: -2px 0 var(--primary);
+    animation: glitch-animation 2s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+    left: -2px;
+    text-shadow: 2px 0 var(--secondary);
+    animation: glitch-animation 3s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-animation {
+    0% {
+        clip-path: inset(30% 0 36% 0);
+    }
+    20% {
+        clip-path: inset(67% 0 13% 0);
+    }
+    40% {
+        clip-path: inset(24% 0 62% 0);
+    }
+    60% {
+        clip-path: inset(90% 0 5% 0);
+    }
+    80% {
+        clip-path: inset(15% 0 80% 0);
+    }
+    100% {
+        clip-path: inset(46% 0 33% 0);
+    }
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1200px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto 1fr;
+    }
+
+    .token-list-panel {
+        grid-column: 1 / 2;
+    }
+
+    .chart-panel {
+        grid-column: 2 / 3;
+    }
+
+    .investment-panel {
+        grid-column: 1 / 3;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .token-list-panel,
+    .chart-panel,
+    .investment-panel {
+        grid-column: 1 / 2;
+    }
+    
+    .dashboard-header h1 {
+        font-size: 2rem;
+    }
+}

@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExDEX | BHE Ecosystem - The Ultimate Cross-Chain Privacy Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Roboto+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/advanced-visuals.css">
+    <link rel="stylesheet" href="css/token-placeholder.css">
+    <link rel="stylesheet" href="css/obsidion-sphere.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r146/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r146/examples/js/controls/OrbitControls.js"></script>
+    <script src="js/obsidion-sphere.js"></script>
+    <link rel="canonical" href="https://exdex.cc" />
+    <meta property="og:url" content="https://exdex.cc" />
+    <meta property="og:title" content="ExDEX | Bitcoin Hardened Ethereum" />
+    <meta property="og:description" content="A Layer 4 financial operating system combining Bitcoin's security with Ethereum's utility, powered by AI and AIRFORCE ONE OPSEC" />
+</head>
+<body>
+    <!-- Main Container -->
+    <div class="cosmos-background">
+        <div class="stars"></div>
+        <div class="twinkling"></div>
+        <div class="clouds"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="main-header">
+        <div class="logo-container">
+            <img src="img/exdex-logo.svg" alt="ExDEX Logo" class="logo">
+            <div class="logo-text">EXDEX</div>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="#trading">Trade</a></li>
+                <li><a href="#liquidity">Liquidity</a></li>
+                <li><a href="#investment">Invest</a></li>
+                <li><a href="#aggro-vault">Aggro Vault</a></li>
+                <li><a href="#card-services">XDEX Home Node</a></li>
+                <li><a href="#driptide">DRIPTIDE</a></li>
+            </ul>
+        </nav>
+        <div class="connect-wallet">
+            <button class="neon-button">Connect Wallet</button>
+        </div>
+        
+        <!-- Coin Payment Form -->
+        <div class="coin-payment-container" style="display: none;">
+            <h3>Secure Payment</h3>
+            <div class="payment-options">
+                <div class="crypto-options">
+                    <h4>Select Crypto Payment Method:</h4>
+                    <div class="crypto-buttons">
+                        <button class="crypto-btn" data-crypto="BTC">Bitcoin (BTC)</button>
+                        <button class="crypto-btn" data-crypto="ETH">Ethereum (ETH)</button>
+                        <button class="crypto-btn" data-crypto="USDT">USDT</button>
+                        <button class="crypto-btn" data-crypto="LTC">Litecoin (LTC)</button>
+                        <button class="crypto-btn" data-crypto="DOGE">Dogecoin (DOGE)</button>
+                        <button class="crypto-btn" data-crypto="XRP">Ripple (XRP)</button>
+                        <button class="crypto-btn" data-crypto="BCH">Bitcoin Cash (BCH)</button>
+                        <button class="crypto-btn" data-crypto="ADA">Cardano (ADA)</button>
+                        <button class="crypto-btn" data-crypto="SOL">Solana (SOL)</button>
+                        <button class="crypto-btn" data-crypto="DOT">Polkadot (DOT)</button>
+                    </div>
+                </div>
+                <div class="fiat-options">
+                    <h4>Select Fiat Payment Method:</h4>
+                    <div class="fiat-buttons">
+                        <button class="fiat-btn" data-currency="USD">USD</button>
+                        <button class="fiat-btn" data-currency="EUR">EUR</button>
+                        <button class="fiat-btn" data-currency="GBP">GBP</button>
+                        <button class="fiat-btn" data-currency="AUD">AUD</button>
+                        <button class="fiat-btn" data-currency="CAD">CAD</button>
+                        <button class="fiat-btn" data-currency="JPY">JPY</button>
+                        <button class="fiat-btn" data-currency="CHF">CHF</button>
+                        <button class="fiat-btn" data-currency="CNY">CNY</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="payment-details">
+                <div class="address-container">
+                    <p>Payment Address:</p>
+                    <input type="text" id="payment-address" readonly>
+                </div>
+                <div class="amount-container">
+                    <p>Amount:</p>
+                    <input type="text" id="payment-amount" readonly>
+                </div>
+                <div class="currency-container">
+                    <p>Currency:</p>
+                    <span id="payment-currency"></span>
+                </div>
+                <div class="method-container">
+                    <p>Payment Method:</p>
+                    <span id="payment-method"></span>
+                </div>
+                <div class="status-container">
+                    <p>Payment Status:</p>
+                    <div id="payment-status">Pending</div>
+                </div>
+                <div class="atm-details" style="display: none;">
+                    <p>ATM Location:</p>
+                    <span id="atm-location">Nearest ATM</span>
+                </div>
+            </div>
+            
+            <div class="qrcode-container">
+                <canvas id="qrcode"></canvas>
+            </div>
+
+            <!-- Payment Method Toggle -->
+            <div class="payment-method-toggle">
+                <button class="payment-method-btn" data-method="crypto">Crypto Payment</button>
+                <button class="payment-method-btn" data-method="atm">ATM Payment</button>
+            </div>
+
+            <!-- ATM Location Selector -->
+            <div class="atm-location-selector" style="display: none;">
+                <h4>Select ATM Location:</h4>
+                <div class="location-buttons">
+                    <button class="atm-location-btn" data-location="nearest">Nearest ATM</button>
+                    <button class="atm-location-btn" data-location="city-center">City Center</button>
+                    <button class="atm-location-btn" data-location="airport">Airport</button>
+                    <button class="atm-location-btn" data-location="shopping-mall">Shopping Mall</button>
+                </div>
+            </div>
+
+            <!-- Payment History -->
+            <div id="payment-history" class="payment-history">
+                <h3>Payment History</h3>
+                <div class="history-list">
+                    <!-- Payment history will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Pool Interface -->
+        <div class="pool-interface">
+                <!-- Tax Collection -->
+                <div class="tax-collection">
+                    <h3>Tax Collection</h3>
+                    <div class="tax-info">
+                        <div class="tax-rate">
+                            <span>Tax Rate:</span>
+                            <span id="tax-rate-display">1%</span>
+                        </div>
+                        <div class="tariff-rate">
+                            <span>US Tariff Rate:</span>
+                            <span id="tariff-rate-display">25% (for US users)</span>
+                        </div>
+                        <div class="tax-addresses">
+                            <div class="address-info">
+                                <span>EVM Tax Address:</span>
+                                <span id="evm-tax-address">0x86de433858B18f664100371D88178d29e9076E95</span>
+                            </div>
+                            <div class="address-info">
+                                <span>BTC Tax Address:</span>
+                                <span id="btc-tax-address">bc1qsqtwnytap3j2gnq2jyt55ktveeu75lqsekdetk</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="pool-header">
+                <h2>BHE Pool</h2>
+                <div class="pool-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Total Value Locked</span>
+                        <span class="stat-value" id="total-value-locked">$0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">APR</span>
+                        <span class="stat-value" id="pool-apr">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Tier Status -->
+            <div class="user-tier-status">
+                <h3>Your Tier Status</h3>
+                <div class="tier-info">
+                    <span class="user-tier">Current Tier: Basic</span>
+                    <span class="tier-balance">Tier Coins: 0</span>
+                </div>
+            </div>
+
+            <!-- Tier Coins Section -->
+            <div class="tier-coins">
+                <h3>Tier Coins</h3>
+                <div class="tier-grid">
+                    <div class="tier-card">
+                        <div class="tier-header">
+                            <h4>TIER1</h4>
+                            <span class="tier-price">$100</span>
+                        </div>
+                        <div class="tier-details">
+                            <p>Basic Tier</p>
+                            <p>ATM Limit: $1000</p>
+                        </div>
+                        <div class="tier-input">
+                            <input type="number" id="tier-amount-TIER1" placeholder="0">
+                            <button class="buy-tier-btn" data-tier="TIER1">Buy</button>
+                        </div>
+                    </div>
+
+                    <div class="tier-card">
+                        <div class="tier-header">
+                            <h4>TIER2</h4>
+                            <span class="tier-price">$500</span>
+                        </div>
+                        <div class="tier-details">
+                            <p>Premium Tier</p>
+                            <p>ATM Limit: $5000</p>
+                        </div>
+                        <div class="tier-input">
+                            <input type="number" id="tier-amount-TIER2" placeholder="0">
+                            <button class="buy-tier-btn" data-tier="TIER2">Buy</button>
+                        </div>
+                    </div>
+
+                    <div class="tier-card">
+                        <div class="tier-header">
+                            <h4>TIER3</h4>
+                            <span class="tier-price">$1000</span>
+                        </div>
+                        <div class="tier-details">
+                            <p>Elite Tier</p>
+                            <p>ATM Limit: $10000</p>
+                        </div>
+                        <div class="tier-input">
+                            <input type="number" id="tier-amount-TIER3" placeholder="0">
+                            <button class="buy-tier-btn" data-tier="TIER3">Buy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ATM Card Section -->
+            <div class="atm-card-section">
+                <h3>ATM Card</h3>
+                <div class="atm-card-container">
+                    <div class="atm-card-details">
+                        <div class="card-number">
+                            <span>Card Number:</span>
+                            <span id="card-number">----</span>
+                        </div>
+                        <div class="card-expiry">
+                            <span>Expiry:</span>
+                            <span id="card-expiry">----</span>
+                        </div>
+                        <div class="card-cvv">
+                            <span>CVV:</span>
+                            <span id="card-cvv">----</span>
+                        </div>
+                        <div class="card-limit">
+                            <span>Limit:</span>
+                            <span id="card-limit">$0</span>
+                        </div>
+                    </div>
+
+                    <div class="buy-atm-form">
+                        <div class="atm-input">
+                            <input type="number" id="atm-amount" placeholder="Enter amount">
+                            <select id="atm-currency">
+                                <option value="USD">USD</option>
+                                <option value="CAD">CAD</option>
+                            </select>
+                        </div>
+                        <button class="buy-atm-btn">Buy ATM Card</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Token Balances -->
+            <div class="token-balances">
+                <div class="token-card">
+                    <div class="token-info">
+                        <img src="img/weth-logo.png" alt="WETH" class="token-icon">
+                        <div>
+                            <span class="token-name">WETH</span>
+                            <span class="token-symbol">WETH</span>
+                        </div>
+                    </div>
+                    <div class="token-actions">
+                        <input type="number" id="deposit-WETH" class="token-input" placeholder="0">
+                        <button class="deposit-btn" data-token="WETH">Deposit</button>
+                        <input type="number" id="withdraw-WETH" class="token-input" placeholder="0">
+                        <button class="withdraw-btn" data-token="WETH">Withdraw</button>
+                    </div>
+                    <div class="token-balance">
+                        <span>Pool Balance:</span>
+                        <span id="pool-balance-WETH">0</span>
+                    </div>
+                </div>
+
+                <div class="token-card">
+                    <div class="token-info">
+                        <img src="img/wbtc-logo.png" alt="WBTC" class="token-icon">
+                        <div>
+                            <span class="token-name">Wrapped Bitcoin</span>
+                            <span class="token-symbol">WBTC</span>
+                        </div>
+                    </div>
+                    <div class="token-actions">
+                        <input type="number" id="deposit-WBTC" class="token-input" placeholder="0">
+                        <button class="deposit-btn" data-token="WBTC">Deposit</button>
+                        <input type="number" id="withdraw-WBTC" class="token-input" placeholder="0">
+                        <button class="withdraw-btn" data-token="WBTC">Withdraw</button>
+                    </div>
+                    <div class="token-balance">
+                        <span>Pool Balance:</span>
+                        <span id="pool-balance-WBTC">0</span>
+                    </div>
+                </div>
+
+                <div class="token-card">
+                    <div class="token-info">
+                        <img src="img/usdt-logo.png" alt="USDT" class="token-icon">
+                        <div>
+                            <span class="token-name">Tether</span>
+                            <span class="token-symbol">USDT</span>
+                        </div>
+                    </div>
+                    <div class="token-actions">
+                        <input type="number" id="deposit-USDT" class="token-input" placeholder="0">
+                        <button class="deposit-btn" data-token="USDT">Deposit</button>
+                        <input type="number" id="withdraw-USDT" class="token-input" placeholder="0">
+                        <button class="withdraw-btn" data-token="USDT">Withdraw</button>
+                    </div>
+                    <div class="token-balance">
+                        <span>Pool Balance:</span>
+                        <span id="pool-balance-USDT">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conversion Section -->
+            <div class="conversion-section">
+                <h3>Convert Tokens</h3>
+                <div class="conversion-form">
+                    <div class="conversion-input">
+                        <select id="from-token">
+                            <option value="WETH">WETH</option>
+                            <option value="WBTC">WBTC</option>
+                            <option value="USDT">USDT</option>
+                        </select>
+                        <input type="number" id="convert-amount" placeholder="0">
+                    </div>
+                    <div class="conversion-arrow">
+                        <span>→</span>
+                    </div>
+                    <div class="conversion-input">
+                        <select id="to-token">
+                            <option value="USDT">USDT</option>
+                            <option value="USD">USD</option>
+                        </select>
+                        <span id="converted-amount">0</span>
+                    </div>
+                    <button class="convert-btn">Convert</button>
+                </div>
+            </div>
+
+            <!-- Exchange Rates -->
+            <div class="exchange-rates">
+                <h3>Current Exchange Rates</h3>
+                <div class="rates-grid">
+                    <div class="rate-item">
+                        <span class="rate-label">WETH</span>
+                        <span class="rate-value" id="exchange-rate-WETH">$0</span>
+                    </div>
+                    <div class="rate-item">
+                        <span class="rate-label">WBTC</span>
+                        <span class="rate-value" id="exchange-rate-WBTC">$0</span>
+                    </div>
+                    <div class="rate-item">
+                        <span class="rate-label">USDT</span>
+                        <span class="rate-value" id="exchange-rate-USDT">$0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scripts -->
+        <script src="https://cdn.jsdelivr.net/npm/web3@1.8.0/dist/web3.min.js"></script>
+        <script src="js/pool-interface.js" defer></script>
+    </header>
+
+    <!-- Hero Section with Obsidion Sphere -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Bitcoin Hardened<br>Ethereum</h1>
+            <h2 class="hero-subtitle">Blockchain Timeline Visualization</h2>
+            <p class="hero-text">Explore the evolution of our blockchain ecosystem in 3D</p>
+            <div class="hero-cta">
+                <button class="primary-button" onclick="sphere.startMarketRefresh()">Start Visualization</button>
+                <a href="https://exdex.cc/app" class="secondary-button">Learn More</a>
+            </div>
+        </div>
+        <div class="obsidion-sphere-container">
+            <canvas id="obsidion-sphere"></canvas>
+        </div>
+        <div class="hero-cta">
+            <button class="primary-button" onclick="sphere.startMarketRefresh()">Start Visualization</button>
+            <a href="https://exdex.cc/app" class="secondary-button">Learn More</a>
+        </div>
+    </section>
+
+    <!-- AIRFORCE ONE OPSEC Badge -->
+    <div class="opsec-badge">
+        <div class="badge-inner">
+            <div class="badge-icon">🛡️</div>
+            <div class="badge-text">SECURED BY AIRFORCE ONE</div>
+        </div>
+    </div>
+
+    <!-- Key Metrics -->
+    <section class="metrics-section">
+        <div class="metric-box">
+            <div class="metric-value">$827.5M</div>
+            <div class="metric-label">Total Value Locked</div>
+        </div>
+        <div class="metric-box">
+            <div class="metric-value">1.2M</div>
+            <div class="metric-label">Transactions</div>
+        </div>
+        <div class="metric-box">
+            <div class="metric-value">245K</div>
+            <div class="metric-label">Users</div>
+        </div>
+        <div class="metric-box">
+            <div class="metric-value">99.98%</div>
+            <div class="metric-label">Security Score</div>
+        </div>
+    </section>
+
+    <!-- Trading Platform -->
+    <section class="platform-section" id="trading">
+        <div class="section-header">
+            <h2>Advanced Trading Platform</h2>
+            <p>ZK-validated, AI-optimized trading with unmatched privacy</p>
+        </div>
+        <div class="platform-preview">
+            <div class="trading-interface">
+                <div class="chart-container">
+                    <!-- 3D Trading Sphere container -->
+                    <div id="trading-sphere" class="trading-sphere-container"></div>
+                </div>
+                <div class="trading-panel">
+                    <div class="token-selector">
+                        <div class="token-from">
+                            <img src="img/bhe-token.svg" alt="BHE">
+                            <span>BHE</span>
+                        </div>
+                        <div class="swap-icon">↔</div>
+                        <div class="token-to">
+                            <div class="token-placeholder">NOS</div>
+                            <span>NOS</span>
+                        </div>
+                    </div>
+                    <div class="trade-info">
+                        <div class="info-row">
+                            <span>Exchange Rate:</span>
+                            <span>1 BHE = 105.42 NOS</span>
+                        </div>
+                        <div class="info-row">
+                            <span>Price Impact:</span>
+                            <span class="highlight-green">0.05%</span>
+                        </div>
+                        <div class="info-row">
+                            <span>Privacy Level:</span>
+                            <span class="highlight-max">Maximum</span>
+                        </div>
+                    </div>
+                    <button class="trade-button">Swap with Privacy Protection</button>
+                </div>
+            </div>
+            <div class="features-list">
+                <div class="feature-item">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Zero-Knowledge Trading</h3>
+                    <p>Execute trades with complete privacy using ZK-SNARKs</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🧠</div>
+                    <h3>AI-Driven Execution</h3>
+                    <p>Optimize trade timing and routes with DRIPTIDE AI</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">⛓️</div>
+                    <h3>Cross-Chain Support</h3>
+                    <p>Trade between Bitcoin and Ethereum ecosystems seamlessly</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📱</div>
+                    <h3>NFC Mobile Trading</h3>
+                    <p>Execute trades with a tap of your phone</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Liquidity Pools -->
+    <section class="platform-section dark-section" id="liquidity">
+        <div class="section-header">
+            <h2>Liquidity Pools & Yield Farming</h2>
+            <p>Provide liquidity to earn fees and DRIPTIDE rewards</p>
+        </div>
+        <div class="pools-container">
+            <div class="pool-card featured-pool">
+                <div class="pool-header">
+                    <div class="pool-name">Aggro Pool (BHE/NOS)</div>
+                    <div class="pool-badge">Featured</div>
+                </div>
+                <div class="pool-metrics">
+                    <div class="metric">
+                        <div class="metric-value">42.5%</div>
+                        <div class="metric-label">APY</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">$324M</div>
+                        <div class="metric-label">TVL</div>
+                    </div>
+                </div>
+                <div class="pool-composition">
+                    <div class="token-share">
+                        <img src="img/bhe-token.svg" alt="BHE">
+                        <span>50%</span>
+                    </div>
+                    <div class="token-share">
+                        <div class="token-placeholder">NOS</div>
+                        <span>50%</span>
+                    </div>
+                </div>
+                <button class="pool-button">Add Liquidity</button>
+            </div>
+            <div class="pool-card">
+                <div class="pool-header">
+                    <div class="pool-name">BTC Bridge Pool</div>
+                </div>
+                <div class="pool-metrics">
+                    <div class="metric">
+                        <div class="metric-value">27.8%</div>
+                        <div class="metric-label">APY</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">$156M</div>
+                        <div class="metric-label">TVL</div>
+                    </div>
+                </div>
+                <div class="pool-composition">
+                    <div class="token-share">
+                        <img src="img/btc-token.svg" alt="BTC">
+                        <span>40%</span>
+                    </div>
+                    <div class="token-share">
+                        <img src="img/bhe-token.svg" alt="BHE">
+                        <span>60%</span>
+                    </div>
+                </div>
+                <button class="pool-button">Add Liquidity</button>
+            </div>
+            <div class="pool-card">
+                <div class="pool-header">
+                    <div class="pool-name">ETH Layer 4 Pool</div>
+                </div>
+                <div class="pool-metrics">
+                    <div class="metric">
+                        <div class="metric-value">31.2%</div>
+                        <div class="metric-label">APY</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">$92M</div>
+                        <div class="metric-label">TVL</div>
+                    </div>
+                </div>
+                <div class="pool-composition">
+                    <div class="token-share">
+                        <img src="img/eth-token.svg" alt="ETH">
+                        <span>30%</span>
+                    </div>
+                    <div class="token-share">
+                        <img src="img/bhe-token.svg" alt="BHE">
+                        <span>70%</span>
+                    </div>
+                </div>
+                <button class="pool-button">Add Liquidity</button>
+            </div>
+        </div>
+        <div class="view-all-container">
+            <button class="view-all-button">View All Pools</button>
+        </div>
+    </section>
+
+    <!-- Investment Platform -->
+    <section class="platform-section" id="investment">
+        <div class="section-header">
+            <h2>Investment Platform</h2>
+            <p>AI-powered strategies for maximum returns</p>
+        </div>
+        <div class="investment-grid">
+            <div class="investment-strategy">
+                <div class="strategy-header">
+                    <h3>Quantum Arbitrage</h3>
+                    <div class="ai-badge">AI-Optimized</div>
+                </div>
+                <div class="strategy-metrics">
+                    <div class="metric">
+                        <div class="metric-value">37.2%</div>
+                        <div class="metric-label">Annual Return</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">Medium</div>
+                        <div class="metric-label">Risk Level</div>
+                    </div>
+                </div>
+                <p class="strategy-description">AI-powered cross-chain arbitrage strategy that capitalizes on price differences between Bitcoin and Ethereum networks.</p>
+                <button class="strategy-button">Invest Now</button>
+            </div>
+            
+            <div class="investment-strategy">
+                <div class="strategy-header">
+                    <h3>DRIPTIDE Yield</h3>
+                    <div class="ai-badge">AI-Optimized</div>
+                </div>
+                <div class="strategy-metrics">
+                    <div class="metric">
+                        <div class="metric-value">28.5%</div>
+                        <div class="metric-label">Annual Return</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">Low</div>
+                        <div class="metric-label">Risk Level</div>
+                    </div>
+                </div>
+                <p class="strategy-description">Data-driven yield farming strategy utilizing tokenized AI insights for superior market positioning.</p>
+                <button class="strategy-button">Invest Now</button>
+            </div>
+            
+            <div class="investment-strategy">
+                <div class="strategy-header">
+                    <h3>Layer 4 Validator</h3>
+                    <div class="ai-badge">Passive</div>
+                </div>
+                <div class="strategy-metrics">
+                    <div class="metric">
+                        <div class="metric-value">19.8%</div>
+                        <div class="metric-label">Annual Return</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">Very Low</div>
+                        <div class="metric-label">Risk Level</div>
+                    </div>
+                </div>
+                <p class="strategy-description">Secure passive income by validating Layer 4 bridge transactions between Bitcoin and Ethereum.</p>
+                <button class="strategy-button">Invest Now</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Aggro Vault -->
+    <section class="platform-section dark-section" id="aggro-vault">
+        <div class="section-header">
+            <h2>Aggro Vault</h2>
+            <p>The ultimate secure liquidity hub with multi-sig protection</p>
+        </div>
+        <div class="vault-container">
+            <div class="vault-graphic">
+                <div class="vault-animation">
+                    <!-- 3D Vault animation goes here -->
+                    <div class="vault-door"></div>
+                    <div class="vault-lock"></div>
+                </div>
+            </div>
+            <div class="vault-features">
+                <div class="vault-feature">
+                    <div class="feature-icon">🔐</div>
+                    <h3>Multi-Signature Security</h3>
+                    <p>Transactions require multiple validator signatures for maximum security</p>
+                </div>
+                <div class="vault-feature">
+                    <div class="feature-icon">🌐</div>
+                    <h3>XDEX Node Integration</h3>
+                    <p>Mirrors your funds to your home node for full control</p>
+                </div>
+                <div class="vault-feature">
+                    <div class="feature-icon">👪</div>
+                    <h3>Family Recovery</h3>
+                    <p>Recover access through trusted family members</p>
+                </div>
+                <div class="vault-feature">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>ZK-Validated Claims</h3>
+                    <p>Prove ownership without revealing private information</p>
+                </div>
+                <button class="vault-button">Access Vault</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- XDEX Home Node Section -->
+    <section class="platform-section" id="card-services">
+        <div class="section-header">
+            <h2>XDEX Home Node</h2>
+            <p class="coming-soon-badge">Coming Soon - 2 Weeks After Website Launch</p>
+        </div>
+        <div class="homenode-showcase">
+            <div class="homenode-graphic">
+                <div class="node-animation">
+                    <!-- Placeholder for node animation/graphic -->
+                    <div class="node-glow"></div>
+                </div>
+            </div>
+            <div class="homenode-features">
+                <h3>Introducing the XDEX Home Node</h3>
+                <p class="homenode-description">Take control of your digital assets with the XDEX Home Node - your personal gateway to the Bitcoin Hardened Ethereum ecosystem.</p>
+                
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <div class="feature-check">✓</div>
+                        <span>Self-Custody Solution</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-check">✓</div>
+                        <span>Secure Asset Management</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-check">✓</div>
+                        <span>Zero-Knowledge Privacy</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-check">✓</div>
+                        <span>Cross-Chain Compatibility</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-check">✓</div>
+                        <span>DRIPTIDE AI Integration</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-check">✓</div>
+                        <span>NFT Support & Management</span>
+                    </div>
+                </div>
+                
+                <div class="homenode-tiers">
+                    <div class="tier">
+                        <div class="tier-name">Enterprise</div>
+                        <div class="tier-requirement">For institutional users</div>
+                    </div>
+                    <div class="tier">
+                        <div class="tier-name">Advanced</div>
+                        <div class="tier-requirement">For power users</div>
+                    </div>
+                    <div class="tier">
+                        <div class="tier-name">Standard</div>
+                        <div class="tier-requirement">For everyday users</div>
+                    </div>
+                </div>
+                
+                <div class="notify-me">
+                    <button class="notify-button">Get Notified on Release</button>
+                    <p class="release-info">Download available 2 weeks after website launch</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DRIPTIDE Section -->
+    <section class="platform-section dark-section" id="driptide">
+        <div class="section-header">
+            <h2>DRIPTIDE Protocol</h2>
+            <p>Tokenizing actionable data for the next financial revolution</p>
+        </div>
+        <div class="driptide-container">
+            <div class="driptide-explanation">
+                <h3>Own Your Data, Own Your Future</h3>
+                <p class="driptide-intro">DRIPTIDE is BHE's AI-driven tokenized data protocol. It captures and encrypts meaningful, permissioned data — from trade activity, user behavior, to smart contract performance — and turns it into claimable, ownable digital assets.</p>
+                
+                <div class="driptide-applications">
+                    <div class="application">
+                        <div class="application-icon">🏥</div>
+                        <h4>Secure Health Data</h4>
+                        <p>Tokenize health records with unbreakable privacy</p>
+                    </div>
+                    <div class="application">
+                        <div class="application-icon">📊</div>
+                        <h4>Financial Analytics</h4>
+                        <p>Decentralized proof-of-activity for finance</p>
+                    </div>
+                    <div class="application">
+                        <div class="application-icon">🛡️</div>
+                        <h4>Anti-Fraud</h4>
+                        <p>AI risk modeling and fraud prevention</p>
+                    </div>
+                    <div class="application">
+                        <div class="application-icon">🗳️</div>
+                        <h4>DAO Governance</h4>
+                        <p>Data-driven decision making for DAOs</p>
+                    </div>
+                </div>
+            </div>
+            <div class="driptide-visualization">
+                <div class="data-flow-animation">
+                    <!-- Animation of data flow will go here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+        <h2>Ready to Join the Financial Revolution?</h2>
+        <p>You are not just a user. You are a participant, validator, and governor of the next digital economy.</p>
+        <div class="cta-buttons">
+            <button class="cta-button primary">Launch App</button>
+            <button class="cta-button secondary">Join Community</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-grid">
+            <div class="footer-column">
+                <h3>ExDEX Platform</h3>
+                <ul>
+                    <li><a href="#trading">Trading</a></li>
+                    <li><a href="#liquidity">Liquidity Pools</a></li>
+                    <li><a href="#investment">Investment</a></li>
+                    <li><a href="#aggro-vault">Aggro Vault</a></li>
+                    <li><a href="#card-services">XDEX Home Node</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">API</a></li>
+                    <li><a href="#">Smart Contracts</a></li>
+                    <li><a href="#">Security Audits</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Community</h3>
+                <ul>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">Discord</a></li>
+                    <li><a href="#">Telegram</a></li>
+                    <li><a href="#">GitHub</a></li>
+                    <li><a href="#">Medium</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Newsletter</h3>
+                <p>Get the latest updates and announcements</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Enter your email">
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="copyright"> 2025 ExDEX - Bitcoin Hardened Ethereum. All rights reserved.</div>
+            <div class="footer-links">
+                <a href="#">Terms</a>
+                <a href="#">Privacy</a>
+                <a href="#">Cookies</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Three.js Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.126.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.126.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://www.coinpayments.net/assets/js/coinpayments.js" defer></script>
+    
+    <!-- TradingSphere engine -->
+    <script src="js/3d-trading-sphere.js" defer></script>
+    <script src="js/main.js" defer></script>
+    <script src="js/coin-payment.js" defer></script>
+</body>
+</html>

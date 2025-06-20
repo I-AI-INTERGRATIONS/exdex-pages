@@ -1,0 +1,8 @@
+body { background: #19191c; color: #fff; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; }
+header nav { background: #1a1a20; padding: 1em; display: flex; gap: 2em; }
+header nav a { color: #3dfc97; text-decoration: none; font-weight: bold; }
+.opsec-downloads { max-width: 600px; margin: 2em auto; background: #23232a; border-radius: 12px; box-shadow: 0 4px 24px #0008; padding: 2em; }
+.tool-list { margin-top: 2em; }
+.tool-card { background: #23232a; border: 1px solid #3dfc97; border-radius: 8px; padding: 1.5em; margin-bottom: 1.5em; }
+.tool-card h3 { color: #3dfc97; }
+footer { text-align: center; color: #999; padding: 2em 0 1em; font-size: 0.95em; }

@@ -1,0 +1,21 @@
+[build]
+  base = ""
+  publish = "."
+  command = ""
+
+[build.environment]
+  NODE_VERSION = "18"
+
+[build.settings]
+  environment = "production"
+
+[build.publish]
+  directory = "."
+
+[build.publish.headers]
+  "/" = [
+    {
+      "key" = "Cache-Control",
+      "value" = "public, max-age=0, must-revalidate"
+    }
+  ]
